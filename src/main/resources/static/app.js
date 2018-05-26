@@ -13,7 +13,7 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new WebSocket('ws://localhost:8080/qwer');
+    var socket = new WebSocket('ws://localhost:8080/fakeanddraw');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);

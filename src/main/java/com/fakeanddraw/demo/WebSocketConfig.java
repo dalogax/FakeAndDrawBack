@@ -1,4 +1,4 @@
-package hello;
+package com.fakeanddraw.demo;
 
 import java.util.Map;
 
@@ -27,7 +27,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/qwer").setAllowedOrigins("*").addInterceptors(new HttpHandshakeInterceptor());
+        registry.addEndpoint("/fakeanddraw").setAllowedOrigins("*").addInterceptors(new HttpHandshakeInterceptor());
     }
     
     public class HttpHandshakeInterceptor implements HandshakeInterceptor {

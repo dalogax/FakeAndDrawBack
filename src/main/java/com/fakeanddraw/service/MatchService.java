@@ -13,14 +13,14 @@ import com.fakeanddraw.model.entity.Game;
 public class MatchService {
 	
 	/** Repository: games and users */
-	private static Map<Long, Set<String>> userRepository = new HashMap<>();
+	private static Map<Long, Set<Player>> matchRepository = new HashMap<>();
 	
 	/**
 	 * Add an user to a game
 	 * @param game game id
 	 * @param user user
 	 */
-	public void addUser(Game game, String user) {	
+	public void addUser(String gameCode, String sessionId) {	
 		if (game != null && game.getId() != null) {
 			Set<String> userList = userRepository.get(game.getId());
 			if (userList == null) {

@@ -1,10 +1,43 @@
 package com.fakeanddraw.model.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
 public class Game{
-	@Getter @Setter private Long id;
-	@Getter @Setter private String code;
+	private Long id;
+	private String code;
+	private Client master;
+	private List<Match> matches;
+
+	public Client getMaster()
+	{
+		return this.master;
+	}
+
+	public void setMaster(Client master)
+	{
+		this.master = master;
+	}
+
+	
+	public Long getId()
+	{
+		return this.id;
+	}
+
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
+
+	public String getCode()
+	{
+		return this.code;
+	}
+
+	public void setCode(String code)
+	{
+		this.code = code;
+	}
+
 
 }

@@ -1,9 +1,16 @@
 package com.fakeanddraw.model.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+public class Player extends Client{
+	
+	private String name;
+	public String getName()
+	{
+		return this.name;
+	}
 
-public class Player{
-	@Getter @Setter private int id;
-	@Getter @Setter private String name;
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
 }

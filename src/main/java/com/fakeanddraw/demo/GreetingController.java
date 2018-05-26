@@ -1,5 +1,8 @@
 package com.fakeanddraw.demo;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -10,12 +13,21 @@ import org.springframework.web.util.HtmlUtils;
 
 @Controller
 public class GreetingController {
-
+	
+	public static Set<String> sessionList = new HashSet<>();
 
     @MessageMapping("/hello")
     public Greeting greeting(HelloMessage message, SimpMessageHeaderAccessor  headerAccessor,
     		@Header("simpSessionId") String sessionId) throws Exception {
-    	template.convertAndSendToUser(headerAccessor.getSessionId(), "/topic/greetings", "{\"body\":\"Hello " + message.getName() + "\"}");
+    	
+    	sessionList.add(headerAccessor.getSessionId());
+    	
+    	for (String candidate: sessionList) {
+    		if ( ! sessionId.equals(candidate)) {
+    			template.convertAndSendToUser(candidate, "/topic/greetings", "{\"body\":\"Hello2 " + message.getName() + "\"}");		
+    		}
+    	}
+    	    	
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
     }
     

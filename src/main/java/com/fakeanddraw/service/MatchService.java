@@ -10,9 +10,14 @@ import java.util.stream.Collectors;
 
 public class MatchService {
 	
-	/** Repositorio de juegos y usuarios */
+	/** Repository: games and users */
 	private static Map<String, Set<String>> userRepository = new HashMap<>();
 	
+	/**
+	 * Add an user to a game
+	 * @param game game id
+	 * @param user user
+	 */
 	public void addUser(String game, String user) {		
 		Set<String> userList = userRepository.get(game);
 		if (userList == null) {
@@ -22,6 +27,11 @@ public class MatchService {
 		userList.add(user);		
 	}
 
+	/**
+	 * Get all users for a game
+	 * @param game game id
+	 * @return user list for a game
+	 */
 	public List<String> getAllUsers(String game) {
 		Set<String> userList = userRepository.get(game);
 		if (userList != null) {

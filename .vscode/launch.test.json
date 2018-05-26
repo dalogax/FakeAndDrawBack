@@ -1,0 +1,28 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "FakeAndDrawBack",
+                "projectName": "FakeAndDrawBack",
+                "workingDirectory": "/Users/dalogax/Documents/workspace/FakeAndDrawBack",
+                "args": [],
+                "vmargs": [],
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "FakeAndDrawBack",
+                "projectName": "FakeAndDrawBack",
+                "workingDirectory": "/Users/dalogax/Documents/workspace/FakeAndDrawBack",
+                "args": [],
+                "vmargs": [],
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}

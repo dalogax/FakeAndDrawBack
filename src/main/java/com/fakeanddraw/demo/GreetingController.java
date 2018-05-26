@@ -1,4 +1,4 @@
-package hello;
+package com.fakeanddraw.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;

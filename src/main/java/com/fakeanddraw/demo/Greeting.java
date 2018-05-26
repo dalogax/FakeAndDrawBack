@@ -1,4 +1,4 @@
-package hello;
+package com.fakeanddraw.demo;
 
 public class Greeting {
 

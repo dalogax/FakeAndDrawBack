@@ -2,10 +2,13 @@ package com.fakeanddraw.model.entity;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Match{
-    private int id;
-    private MatchStatus status;
-    private List<Drawing> draws;
+	@Getter @Setter private int id;
+	@Getter @Setter private MatchStatus status;
+    @Getter @Setter private List<Drawing> draws;
 
     public enum MatchStatus {
         JOIN, DRAW, TITLE, VOTE,

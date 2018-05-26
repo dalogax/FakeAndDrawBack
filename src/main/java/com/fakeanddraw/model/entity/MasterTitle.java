@@ -1,26 +1,10 @@
 package com.fakeanddraw.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class MasterTitle {
-    private int id;
-    private String description;
+	@Getter @Setter private int id;
+	@Getter @Setter private String description;
 
-	public int getId()
-	{
-		return this.id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public String getDescription()
-	{
-		return this.description;
-	}
-
-	public void setDescription(String description)
-	{
-		this.description = description;
-	}
 }

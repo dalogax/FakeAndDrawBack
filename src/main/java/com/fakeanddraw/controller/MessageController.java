@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Controller
-public class GreetingController {
+public class MessageController {
 
     @Autowired
     private SimpMessagingTemplate template;

@@ -1,4 +1,4 @@
-package com.fakeanddraw.rest.model;
+package hello;
 
 public class Greeting {
 

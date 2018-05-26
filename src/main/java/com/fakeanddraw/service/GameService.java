@@ -13,8 +13,13 @@ import com.fakeanddraw.util.AppHelper;
 @Service
 public class GameService {
 	
+	// temporary repository
 	private static List<String> gameRepository = new ArrayList<String>();
 	
+	/**
+	 * Inserts a new Game register, generating the new code
+	 * @return game object
+	 */
 	public Game create (){
 
 		Game game = new Game();

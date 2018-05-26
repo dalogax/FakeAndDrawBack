@@ -1,26 +1,10 @@
 package com.fakeanddraw.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Game{
-    private int id;
-    private String code;
+	@Getter @Setter private Long id;
+	@Getter @Setter private String code;
 
-	public int getId()
-	{
-		return this.id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public String getCode()
-	{
-		return this.code;
-	}
-
-	public void setCode(String code)
-	{
-		this.code = code;
-	}
 }

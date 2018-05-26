@@ -2,10 +2,13 @@ package com.fakeanddraw.model.entity;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Title{
-    private int id;
-    private Player player;
-    private Drawing drawing;
-    private boolean isOriginal;
-    private List<Player> votes;
+	@Getter @Setter private int id;
+	@Getter @Setter private Player player;
+	@Getter @Setter private Drawing drawing;
+	@Getter @Setter private boolean isOriginal;
+	@Getter @Setter private List<Player> votes;
 }

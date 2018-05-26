@@ -5,6 +5,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fakeanddraw.model.entity.Game;
+
 import org.junit.Assert;
 
 public class MatchServiceTest {
@@ -23,28 +25,37 @@ public class MatchServiceTest {
 	
 	@Test
 	public void testAddUser() {
-		service.addUser("Uno", "Pedro");
-		List<String> userList = service.getAllUsers("Uno");
+		Game game = new Game();
+		game.setId(new Long(1));
+		game.setCode("1234");
+		service.addUser(game, "Pedro");
+		List<String> userList = service.getAllUsers(game);
 		Assert.assertTrue("El usuario Pedro si que tiene que estar", userList.contains("Pedro"));
 	}
 	
 	@Test
 	public void testMultiplesSameUser() {
-		service.addUser("Uno", "Pedro");
-		service.addUser("Uno", "Pedro");
-		service.addUser("Uno", "Pedro");
-		List<String> userList = service.getAllUsers("Uno");
+		Game game = new Game();
+		game.setId(new Long(1));
+		game.setCode("1234");
+		service.addUser(game, "Pedro");
+		service.addUser(game, "Pedro");
+		service.addUser(game, "Pedro");
+		List<String> userList = service.getAllUsers(game);
 		Assert.assertTrue("El usuario Pedro si que tiene que estar", userList.contains("Pedro"));
 		Assert.assertTrue("El numero de usuarios tiene que ser uno", 1 == userList.size());
 	}
 	
 	@Test
 	public void testMultipleAddUsers() {
-		service.addUser("Uno", "Pedro");
-		service.addUser("Uno", "Juan");
-		service.addUser("Uno", "Dani");
-		service.addUser("Uno", "Paula");
-		List<String> userList = service.getAllUsers("Uno");
+		Game game = new Game();
+		game.setId(new Long(1));
+		game.setCode("1234");		
+		service.addUser(game, "Pedro");
+		service.addUser(game, "Juan");
+		service.addUser(game, "Dani");
+		service.addUser(game, "Paula");
+		List<String> userList = service.getAllUsers(game);
 		Assert.assertTrue("El usuario Pedro si que tiene que estar", userList.contains("Pedro"));
 		Assert.assertTrue("El usuario Dani si que tiene que estar", userList.contains("Dani"));
 		Assert.assertTrue("El numero de usuarios tiene que ser cuatro", 4 == userList.size());

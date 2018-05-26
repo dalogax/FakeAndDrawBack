@@ -1,6 +1,9 @@
 package com.fakeanddraw.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Player{
-    private int id;
-    private String name;
+	@Getter @Setter private int id;
+	@Getter @Setter private String name;
 }

@@ -13,12 +13,12 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new WebSocket('ws://localhost:8080/fakeanddraw');
+    var socket = new SockJS('/fakeanddraw', [], { sessionId: 67 } );
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
+        var sessionId = /\/([^\/]+)\/websocket/.exec(socket._transport.url)[1];
+        stompClient.subscribe('/user/' + sessionId + '/topic/greetings', function (greeting) {
         	console.log(greeting);
             showGreeting(JSON.parse(greeting.body).content);
         });

@@ -22,12 +22,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/user");
         config.setApplicationDestinationPrefixes("/app");
+        config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/fakeanddraw").setAllowedOrigins("*").addInterceptors(new HttpHandshakeInterceptor());
+        registry.addEndpoint("/fakeanddraw").setAllowedOrigins("*").withSockJS().setInterceptors(new HttpHandshakeInterceptor());
     }
     
     public class HttpHandshakeInterceptor implements HandshakeInterceptor {

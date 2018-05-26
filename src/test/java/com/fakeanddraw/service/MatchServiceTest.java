@@ -14,8 +14,6 @@ public class MatchServiceTest {
 	
 	@Test
 	public void testNullInput() {
-		service.addUser();
+		service.addUser(null, null);
 	}
-	
-	
 }

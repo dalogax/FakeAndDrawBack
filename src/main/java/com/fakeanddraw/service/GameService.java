@@ -20,7 +20,7 @@ public class GameService {
 		Game game = new Game();
 		
 		String code = AppHelper.getRandomString(6);
-		game.setId(gameRepository.size());
+		game.setId(Long.valueOf(gameRepository.size()));
 		game.setCode(code);
 		
 		gameRepository.add(code);

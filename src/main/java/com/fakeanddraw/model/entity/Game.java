@@ -1,15 +1,15 @@
 package com.fakeanddraw.model.entity;
 
 public class Game{
-    private int id;
+    private Long id;
     private String code;
 
-	public int getId()
+	public Long getId()
 	{
 		return this.id;
 	}
 
-	public void setId(int id)
+	public void setId(Long id)
 	{
 		this.id = id;
 	}

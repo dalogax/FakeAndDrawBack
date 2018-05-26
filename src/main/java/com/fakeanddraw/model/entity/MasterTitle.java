@@ -23,6 +23,4 @@ public class MasterTitle {
 	{
 		this.description = description;
 	}
-
-
 }

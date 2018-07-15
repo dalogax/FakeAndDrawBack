@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello WebSocket</title>
+    <title>Fake And Draw</title>
     <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/main.css" rel="stylesheet">
     <script src="/webjars/jquery/jquery.min.js"></script>
@@ -18,32 +18,37 @@
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
-                    <label for="connect">WebSocket connection:</label>
-                    <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                    <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-                    </button>
+                    <button id="createGame" class="btn btn-default" type="submit">Create game</button>
+                    <button id="deleteGame" class="btn btn-default" type="submit" disabled="disabled">Delete game </button>
+                    <button id="exitGame" class="btn btn-default" type="submit" disabled="disabled">Exit game </button>
                 </div>
             </form>
         </div>
         <div class="col-md-6">
-            <form class="form-inline">
+            <form class="form-inline" id="joinForm">
                 <div class="form-group">
-                    <label for="name">What is your name?</label>
-                    <input type="text" id="name" class="form-control" placeholder="Your name here...">
+                    <label for="name">Join game:</label>
+                    <input type="text" id="gameCode" class="form-control" placeholder="Enter the game code here...">
+                    <input type="text" id="userName" class="form-control" placeholder="Enter your name here...">
+                    <button id="joinGame" class="btn btn-default" type="submit">Join</button>
                 </div>
-                <button id="send" class="btn btn-default" type="submit">Send</button>
             </form>
         </div>
     </div>
     <div class="row">
+        <div id="roomCode" class="col-md-12" style="display:none">
+            <h1 id="roomCodeText">CODE</h1>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
+            <table id="roomStatus" class="table table-striped" style="display:none">
                 <thead>
                 <tr>
-                    <th>Greetings</th>
+                    <th>Room status</th>
                 </tr>
                 </thead>
-                <tbody id="greetings">
+                <tbody id="roomList">
                 </tbody>
             </table>
         </div>

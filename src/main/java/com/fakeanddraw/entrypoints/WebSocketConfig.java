@@ -1,4 +1,4 @@
-package com.fakeanddraw.demo;
+package com.fakeanddraw.entrypoints;
 
 import java.util.Map;
 

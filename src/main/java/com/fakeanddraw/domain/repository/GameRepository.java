@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,9 +32,9 @@ public class GameRepository {
 	}
 
 	@Transactional(readOnly = true)
-	public Game findByCode(String roomCode) {
-		return jdbcTemplate.queryForObject("SELECT GAME_ID, SESSION_ID, ROOM_CODE FROM GAME " + "WHERE ROOM_CODE = ?",
-				new Object[] { roomCode }, new GameRowMapper());
+	public Optional<Game> findByCode(String roomCode) {
+		return Optional.of(jdbcTemplate.queryForObject("SELECT GAME_ID, SESSION_ID, ROOM_CODE FROM GAME " + "WHERE ROOM_CODE = ?",
+				new Object[] { roomCode }, new GameRowMapper()));
 	}
 
 	public Game create(final Game game) {

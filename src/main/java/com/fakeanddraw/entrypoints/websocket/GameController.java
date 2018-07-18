@@ -1,5 +1,7 @@
 package com.fakeanddraw.entrypoints.websocket;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -38,10 +40,15 @@ public class GameController {
 	public void join(JoinMessage message, SimpMessageHeaderAccessor headerAccessor,
 			@Header("simpSessionId") String sessionId) throws Exception {
 
-		Game game = addPlayerToGame.execute(new AddPlayerToGameRequest(message.getRoomCode(), headerAccessor.getSessionId(), message.getName()));
-		// Notify master about new user joined
-		template.convertAndSendToUser(game.getSessionId(), "/topic/playerJoined",
-				"{\"user\":\"" + message.getName() + "\"}");
+		Optional<Game> game = addPlayerToGame.execute(new AddPlayerToGameRequest(message.getRoomCode(), headerAccessor.getSessionId(), message.getName()));
+		
+		if (game.isPresent()) {
+			// Notify master about new user joined
+			template.convertAndSendToUser(game.get().getSessionId(), "/topic/playerJoined",
+					"{\"user\":\"" + message.getName() + "\"}");
+		} else {
+			// Should notify user that the game code is not valid
+		}
 	}
 
 	@Autowired

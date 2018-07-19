@@ -24,11 +24,11 @@ function disconnect() {
 }
 
 function createGame(gameCode) {
-    stompClient.send("/app/create");
+    stompClient.send("/game/create");
 }
 
 function joinGame(gameCode) {
-    stompClient.send("/app/join", {}, JSON.stringify({'roomCode': $("#gameCode").val(),'name': $("#userName").val()}));
+    stompClient.send("/game/join", {}, JSON.stringify({'roomCode': $("#gameCode").val(),'name': $("#userName").val()}));
 }
 
 function roomCreated(roomCode) {
@@ -52,15 +52,15 @@ $(function () {
         $("#joinForm").hide();
         $("#roomStatus").show();
         isMaster = true;
-        var socket = new SockJS('/fakeanddraw', [], { sessionId: 67 } );
+        var socket = new SockJS('/fakeanddraw', [], { sessionId: 32 } );
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             var sessionId = /\/([^\/]+)\/websocket/.exec(socket._transport.url)[1];
-            stompClient.subscribe('/user/' + sessionId + '/topic/playerJoined', function (message) {
+            stompClient.subscribe('/user/' + sessionId + '/playerJoined', function (message) {
                 console.log(message);
                 userJoined(JSON.parse(message.body).user);
             });
-            stompClient.subscribe('/user/' + sessionId + '/topic/roomCreated', function (message) {
+            stompClient.subscribe('/user/' + sessionId + '/roomCreated', function (message) {
                 console.log(message);
                 roomCreated(JSON.parse(message.body).roomCode);
             });
@@ -80,7 +80,7 @@ $(function () {
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             var sessionId = /\/([^\/]+)\/websocket/.exec(socket._transport.url)[1];
-            stompClient.subscribe('/user/' + sessionId + '/topic/greetings', function (greeting) {
+            stompClient.subscribe('/user/' + sessionId + '/matchStarted', function (greeting) {
                 console.log(greeting);
                 messageReceived(JSON.parse(greeting.body).content);
             });
@@ -91,4 +91,3 @@ $(function () {
         disconnect(); 
     });
 });
-

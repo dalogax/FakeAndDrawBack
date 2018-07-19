@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -16,35 +15,34 @@ import com.fakeanddraw.domain.usecase.CreateGame;
 import com.fakeanddraw.entrypoints.websocket.message.JoinMessage;
 
 @Controller
+@MessageMapping("/game/")
 public class GameController {
 
 	@Autowired
 	CreateGame createGame;
-	
+
 	@Autowired
 	AddPlayerToGame addPlayerToGame;
 
 	@MessageMapping("/create")
-	public void create(SimpMessageHeaderAccessor headerAccessor, @Header("simpSessionId") String sessionId)
-			throws Exception {
+	public void create(@Header("simpSessionId") String sessionId) throws Exception {
 
 		// Create new game
-		Game game = createGame.execute(headerAccessor.getSessionId());
+		Game game = createGame.execute(sessionId);
 
 		// Notify master with room code
-		template.convertAndSendToUser(headerAccessor.getSessionId(), "/topic/roomCreated",
-				"{\"roomCode\":\"" + game.getRoomCode() + "\"}");
+		template.convertAndSendToUser(sessionId, "/roomCreated", "{\"roomCode\":\"" + game.getRoomCode() + "\"}");
 	}
 
 	@MessageMapping("/join")
-	public void join(JoinMessage message, SimpMessageHeaderAccessor headerAccessor,
-			@Header("simpSessionId") String sessionId) throws Exception {
+	public void join(JoinMessage message, @Header("simpSessionId") String sessionId) throws Exception {
 
-		Optional<Game> game = addPlayerToGame.execute(new AddPlayerToGameRequest(message.getRoomCode(), headerAccessor.getSessionId(), message.getName()));
-		
+		Optional<Game> game = addPlayerToGame
+				.execute(new AddPlayerToGameRequest(message.getRoomCode(), sessionId, message.getName()));
+
 		if (game.isPresent()) {
 			// Notify master about new user joined
-			template.convertAndSendToUser(game.get().getSessionId(), "/topic/playerJoined",
+			template.convertAndSendToUser(game.get().getSessionId(), "/playerJoined",
 					"{\"user\":\"" + message.getName() + "\"}");
 		} else {
 			// Should notify user that the game code is not valid

@@ -47,12 +47,12 @@ In case of error the payload will have the following structure:
 } = errorPayload
 ```
 To identify the origin and destiny of every message we will use the following icons:
-:pager: Server
-:tv: -> Master client
-:iphone: -> Player client
+- :pager: Server
+- :tv: -> Master client
+- :iphone: -> Player client
 
 ### Game create
-:computer: :arrow_right: :pager:
+:tv: -> :pager:
 A game is created with a "game-create" message originated on the master client.
 ```
 {
@@ -66,7 +66,7 @@ Example:
 }
 ```
 ### Game created
-:pager::arrow_right::computer:
+:pager:->:tv:
 If the game is succesfully created the server will send a "game-created" message to the master client.
 ```
 {

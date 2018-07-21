@@ -58,7 +58,7 @@ $(function () {
             var sessionId = /\/([^\/]+)\/websocket/.exec(socket._transport.url)[1];
             stompClient.subscribe('/user/' + sessionId + '/playerJoined', function (message) {
                 console.log(message);
-                userJoined(JSON.parse(message.body).userName);
+                userJoined(JSON.parse(message.body).user);
             });
             stompClient.subscribe('/user/' + sessionId + '/roomCreated', function (message) {
                 console.log(message);

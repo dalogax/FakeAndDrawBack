@@ -1,4 +1,4 @@
-package com.fakeanddraw.entrypoints.websocket.message.response;
+package com.fakeanddraw.entrypoints.websocket;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlayerJoinedMessage {
-
-	private String userName;
+public class Message {
+	
+	private String type;
+	private MessageBody body;
 }

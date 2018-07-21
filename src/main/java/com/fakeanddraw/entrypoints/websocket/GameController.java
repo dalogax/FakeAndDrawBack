@@ -12,13 +12,15 @@ import com.fakeanddraw.domain.model.Game;
 import com.fakeanddraw.domain.usecase.AddPlayerToGame;
 import com.fakeanddraw.domain.usecase.AddPlayerToGameRequest;
 import com.fakeanddraw.domain.usecase.CreateGame;
-import com.fakeanddraw.entrypoints.websocket.message.request.JoinGameMessage;
-import com.fakeanddraw.entrypoints.websocket.message.response.PlayerJoinedMessage;
-import com.fakeanddraw.entrypoints.websocket.message.response.RoomCreatedMessage;
+import com.fakeanddraw.entrypoints.websocket.message.request.CreateGameMessage;
+import com.fakeanddraw.entrypoints.websocket.message.request.NewUserMessage;
+import com.fakeanddraw.entrypoints.websocket.message.request.NewUserMessageBody;
+import com.fakeanddraw.entrypoints.websocket.message.response.GameCreatedMessage;
+import com.fakeanddraw.entrypoints.websocket.message.response.GameCreatedMessageBody;
+import com.fakeanddraw.entrypoints.websocket.message.response.PlayerJoinedMessageBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
-@MessageMapping("/game/")
 public class GameController {
 
 	@Autowired
@@ -27,31 +29,46 @@ public class GameController {
 	@Autowired
 	AddPlayerToGame addPlayerToGame;
 
-	@MessageMapping("/create")
-	public void create(@Header("simpSessionId") String sessionId) throws Exception {
+	@MessageMapping("/request")
+	public void request(Message message, @Header("simpSessionId") String sessionId) throws Exception {
+		
+		
+		if (message!=null && message.getType()!=null) {
+			switch (message.getType()) {
+				case CreateGameMessage.messageType:
+					// Create new game
+					Game newGame = createGame.execute(sessionId);
+									
+					Message gameCreatedMessage = new GameCreatedMessage(new GameCreatedMessageBody(newGame.getRoomCode(), null));
+	
+					// Notify master with room code
+					template.convertAndSendToUser(sessionId, "/response",
+							new ObjectMapper().writeValueAsString(gameCreatedMessage));
+				
+			
+				case NewUserMessage.messageType:
+					
+					NewUserMessageBody newUserMessageBody = (NewUserMessageBody) message.getBody();
+					
+					
+					Optional<Game> game = addPlayerToGame
+					.execute(new AddPlayerToGameRequest(newUserMessageBody.getGameCode(), sessionId, newUserMessageBody.getNickName()));
 
-		// Create new game
-		Game game = createGame.execute(sessionId);
-
-		// Notify master with room code
-		template.convertAndSendToUser(sessionId, "/roomCreated",
-				new ObjectMapper().writeValueAsString(new RoomCreatedMessage(game.getRoomCode())));
-	}
-
-	@MessageMapping("/join")
-	public void join(JoinGameMessage message, @Header("simpSessionId") String sessionId) throws Exception {
-
-		Optional<Game> game = addPlayerToGame
-				.execute(new AddPlayerToGameRequest(message.getRoomCode(), sessionId, message.getName()));
-
-		if (game.isPresent()) {
-			// Notify master about new user joined
-			template.convertAndSendToUser(game.get().getSessionId(), "/playerJoined",
-					new ObjectMapper().writeValueAsString(new PlayerJoinedMessage(message.getName())));
-		} else {
-			// Should notify user that the game code is not valid
+//					if (game.isPresent()) {
+//						// Notify master about new user joined
+//						template.convertAndSendToUser(game.get().getSessionId(), "/playerJoined",
+//								new ObjectMapper().writeValueAsString(new PlayerJoinedMessageBody(message.getName())));
+//						
+//						//Notificar al usuario que se ha unido correctamente
+//					} else {
+//						// Should notify user that the game code is not valid
+//					}
+			}
 		}
+
+		
 	}
+
 
 	@Autowired
 	private SimpMessagingTemplate template;

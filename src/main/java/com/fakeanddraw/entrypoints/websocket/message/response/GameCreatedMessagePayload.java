@@ -2,7 +2,7 @@ package com.fakeanddraw.entrypoints.websocket.message.response;
 
 import java.sql.Timestamp;
 
-import com.fakeanddraw.entrypoints.websocket.MessageBody;
+import com.fakeanddraw.entrypoints.websocket.MessagePayload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameCreatedMessageBody extends MessageBody {
+public class GameCreatedMessagePayload extends MessagePayload {
 
 	private String gameCode;
 	private Timestamp lifespanTimestamp;

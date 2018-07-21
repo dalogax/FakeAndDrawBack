@@ -3,6 +3,8 @@ Server side application for FakeAndDraw game
 
 Using clean architecture application structure: https://github.com/mattia-battiston/clean-architecture-example
 
+Using flux standad action for message definition: https://github.com/redux-utilities/flux-standard-action
+
 Run -> mvn spring-boot:run
 
 ### DB:

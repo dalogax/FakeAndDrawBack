@@ -47,13 +47,13 @@ In case of error the payload will have the following structure:
 } = errorPayload
 ```
 To identify the origin and destiny of every message we will use the following icons:
-- :pager: Server
-- :tv: -> Master client
-- :iphone: -> Player client
+- :radio: Server
+- :tv: Master client
+- :iphone: Player client
 
-### Game create
-:tv: -> :pager:
-A game is created with a "game-create" message originated on the master client.
+### Game create 
+:tv: to :radio:
+> A game is created with a "game-create" message originated on the master client.
 ```
 {
   string type = 'game-create'
@@ -66,8 +66,8 @@ Example:
 }
 ```
 ### Game created
-:pager:->:tv:
-If the game is succesfully created the server will send a "game-created" message to the master client.
+:radio: to :tv:
+> If the game is succesfully created the server will send a "game-created" message to the master client.
 ```
 {
   string type = 'game-created',
@@ -91,26 +91,57 @@ Example:
 }
 ```
 
-###NEW USER
-direction s = c-s
-type s = new-user
-body
-  nickname s = Nick
-  gameCode s = HFKDC
-  
-direction s = s-c (to Master)
-type s = user-added
-body
-  userId n = 1
-  nickname s = Nick
-  avatarUrl s = http://sdasdad.com/asdsad.jpg
-  
-direction s = s-c (to added User)
-type s = user-added
-body
-  userId n = 1
-  nickname s = Nick
-  avatarUrl s = http://sdasdad.com/asdsad.jpg
+### New User
+:iphone: to :radio:
+> When a player introduces his nickname and the game code and clicks on join game a new-user message is sent to the server
+```
+{
+  string type = 'new-user',
+  NewUserPayload payload
+} = NewUserMessage
+
+{
+  string nickname,
+	string gameCode
+} = NewUserPayload
+```
+Example:
+```
+{
+  "type": "new-user",
+  "payload": {
+		"nickname": "Mike",
+		"gameCode": "HFKDC"
+  }
+}
+```
+### User Added
+:radio: to :tv: and :iphone:
+> If the user is succesfully added the server will send a "user-added" message to the master client.
+```
+{
+  string type = 'user-added',
+  UserAddedPayload payload,
+  boolean error?
+} = UserAddedMessage
+
+{
+  number userId,
+	string nickname,
+	string avatarUrl
+} = UserAddedPayload
+```
+Example:
+```
+{
+  "type": "user-added",
+  "payload": {
+    "userId": 1,
+    "nickname": "Mike",
+		"avatarUrl": "https://media.giphy.com/media/3oFzm4W5S8U6VDnBdK/giphy.gif"
+  }
+}
+```
   
 ###DRAWING STARTED
 direction s = s-c

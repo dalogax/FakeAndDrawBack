@@ -46,6 +46,16 @@ In case of error the payload will have the following structure:
   string message
 } = errorPayload
 ```
+### Common payloads
+#### Player Info Payload
+> Represents a player
+```
+{
+	number userId,
+	string nickname,
+	string avatarUrl
+} = UserInfoPayload
+```
 To identify the origin and destiny of every message we will use the following icons:
 - :radio: Server
 - :tv: Master client
@@ -86,7 +96,7 @@ Example:
   "type": "game-created",
   "payload": {
     "gameCode": "HFKDC",
-    "lifespanTimestamp": 123123123123 
+    "lifespanTimestamp": 1532211569 
   }
 }
 ```
@@ -117,19 +127,13 @@ Example:
 ```
 ### User Added
 :radio: to :tv: and :iphone:
-> If the user is succesfully added the server will send a "user-added" message to the master client.
+> If the user is succesfully added the server will send a "user-added" message to the master client and the added player.
 ```
 {
   string type = 'user-added',
-  UserAddedPayload payload,
+  PlayerInfoPayload payload,
   boolean error?
 } = UserAddedMessage
-
-{
-  number userId,
-	string nickname,
-	string avatarUrl
-} = UserAddedPayload
 ```
 Example:
 ```
@@ -142,33 +146,98 @@ Example:
   }
 }
 ```
-  
-###DRAWING STARTED
-direction s = s-c
-type s = drawing-started
-body
-	lifespanTimestamp n = 123123123123
 
-###TITLE ASSIGN ()
-direction s = s-c
-type s = title-assign
-body
-  	lifespanTimestamp n = 123123123123
-  	title s = Elephant
-  
-###DRAWING SUBMIT (device send draw)
-direction s = c-s
-type s = drawing-submit
-body
-  image s = base64
-  
-###DRAWING ADDED
-direction s = c-s
-type s = drawing-added
-body
-    userId n = 1
-    nickname s = Nick
-    avatarUrl s = http://sdasdad.com/asdsad.jpg
+### Drawing started
+:radio: to :tv:
+> The server will notify the master that the players will start drawing the suggested titles so master so he can show the drawing timeout.
+```
+{
+  string type = 'drawing-started',
+  DrawingStartedPayload payload
+} = DrawingStartedMessage
+
+{
+  number lifespanTimestamp,
+} = DrawingStartedPayload
+```
+Example:
+```
+{
+  "type": "drawing-started",
+  "payload": {
+    "lifespanTimestamp": 1532211569
+  }
+}
+```
+
+### Title assign
+:radio: to :iphone:
+> The server will send to each player a "title-assign" message with the suggested title they will try to represent with a drawing.
+```
+{
+  string type = 'title-assign',
+  TitleAssignPayload payload
+} = TitleAssignMessage
+
+{
+  number lifespanTimestamp,
+	string title
+} = TitleAssignPayload
+```
+Example:
+```
+{
+  "type": "title-assign",
+  "payload": {
+    "lifespanTimestamp": 1532211569,
+		"title": "Flying cow"
+  }
+}
+```
+
+### Drawing submit
+:iphone: to :radio:
+> When the player finishes his drawing he will send the drawing to the server with a The server will send to each player a "drawing-assign" message.
+```
+{
+  string type = 'drawing-submit',
+  DrawingSubmitPayload payload
+} = DrawingSubmitMessage
+
+{
+	string image (base 64)
+} = DrawingSubmitPayload
+```
+Example:
+```
+{
+  "type": "drawing-submit",
+  "payload": {
+    "image": "kZJRgABAQAAAQABAAD/2wCEAAkGBxQS..."
+  }
+}
+```
+
+### Drawing added
+:radio: to :tv: 
+> When a drawing is succesfully submitted the server will notify the master that a player finished drawing with the player info.
+```
+{
+  string type = 'drawing-added',
+  PlayerInfoPayload payload
+} = DrawingAddedMessage
+```
+Example:
+```
+{
+  "type": "drawing-added",
+  "payload": {
+    "userId": 1,
+    "nickname": "Mike",
+		"avatarUrl": "https://media.giphy.com/media/3oFzm4W5S8U6VDnBdK/giphy.gif"
+  }
+}
+```
  
 ###START ROUND (master show image, device waiting)
 direction s = s-c

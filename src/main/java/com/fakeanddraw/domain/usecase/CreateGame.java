@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.fakeanddraw.domain.model.Game;
@@ -21,16 +22,16 @@ public class CreateGame implements UseCase<String> {
 
 	@Autowired
 	private GameRepository gameRepository;
+	
+	@Value("${game.timeout.join}") 
+	Integer joinTimeout;
 
 	@Override
 	public void execute(String sessionId) {
 		Game newGame = gameRepository.create(new Game(sessionId));
-		
-		DateTime waitingRoomTimeout = new DateTime();
-		waitingRoomTimeout = waitingRoomTimeout.plusSeconds(15);
 
 		Message gameCreatedMessage = new Message(MessageType.GAME_CREATED.getType(),
-				new GameCreatedMessagePayload(newGame.getRoomCode(), new Timestamp(waitingRoomTimeout.getMillis())));
+				new GameCreatedMessagePayload(newGame.getRoomCode(), new Timestamp(new DateTime().plusSeconds(joinTimeout).getMillis())));
 
 		// Notify master with room code
 		responseController.send(sessionId,gameCreatedMessage);

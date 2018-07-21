@@ -1,42 +1,95 @@
 # FakeAndDraw backend application
-Server side application for FakeAndDraw game
+Server side application for FakeAndDraw game.
+You can find the client side code [here](https://github.com/dalogax/FakeAndDrawFront).
 
-Using clean architecture application structure: https://github.com/mattia-battiston/clean-architecture-example
 
-Using flux standad action for message definition: https://github.com/redux-utilities/flux-standard-action
+## Requirements
+- Maven
+- Java 1.8
 
-Run -> mvn spring-boot:run
+To run the application just type the following command:
+```
+$ mvn spring-boot:run
+```
 
-### DB:
-- /src/main/resources/schema.sql -> schema definition for embebed database, will be executed on boot
-- /src/main/resources/data.sql -> data definition for embebed database, will be executed on boot
-- /src/main/resources/application.properties -> main configuration file, check comments there
+## Application architecture
+Using [clean architecture](https://github.com/mattia-battiston/clean-architecture-example).
+
+- EntryPoints
+- Domain
+- Dataproviders
+
+## Database
+- /src/main/resources/schema.sql -> schema definition for embebed database, will be executed on boot.
+- /src/main/resources/data.sql -> data definition for embebed database, will be executed on boot.
+- /src/main/resources/application.properties -> main configuration file, check comments there.
 - H2 embebed database console will be loaded on http://localhost:8080/h2-console
   
 
 # Websocket API
 
-##TIMEOUTS
+## Message definition
 
-direction s = s-c
-type s = game-timeout
-direction s = s-c
-type s = match-timeout
-direction s = s-c
-type s = draw-timeout
+All messages on both directions are based on [Flux action objects](https://github.com/redux-utilities/flux-standard-action) with the following structure:
 
-##FLOW
+```
+{
+  string type,
+  object payload?,
+  boolean error?
+} = message
+```
+In case of error the payload will have the following structure:
+```
+{
+  number code,
+  string message
+} = errorPayload
+```
+To identify the origin and destiny of every message we will use the following icons:
+:pager: Server
+:tv: -> Master client
+:iphone: -> Player client
 
-###GAME CREATION
-direction s = c-s
-type s = game-create
-direction s = s-c
-type s = game-created
-+ body (application/json)
-	{
-		gameCode s = HFKDC,
-		lifespanTimestamp n = 123123123123
-	}
+### Game create
+:computer: :arrow_right: :pager:
+A game is created with a "game-create" message originated on the master client.
+```
+{
+  string type = 'game-create'
+} = GameCreateMessage
+```
+Example:
+```
+{
+  "type": "game-create",
+}
+```
+### Game created
+:pager::arrow_right::computer:
+If the game is succesfully created the server will send a "game-created" message to the master client.
+```
+{
+  string type = 'game-created',
+  GameCreatedPayload payload,
+  boolean error?
+} = GameCreatedMessage
+
+{
+  string gameCode,
+  number lifespanTimestamp
+} = GameCreatedPayload
+```
+Example:
+```
+{
+  "type": "game-created",
+  "payload": {
+    "gameCode": "HFKDC",
+    "lifespanTimestamp": 123123123123 
+  }
+}
+```
 
 ###NEW USER
 direction s = c-s
@@ -126,7 +179,7 @@ body
       name s = Votee
     
  -- TOSTART
-###MATCH RESULTS (master shows results, device waiting)
+### MATCH RESULTS (master shows results, device waiting)
 direction s = s-c
 type s = match-results
 body
@@ -134,20 +187,3 @@ body
     name s = Juan
     points n = 123123
 -- TOMATCHSTART
-
-
-
-###TODO
-Sprint 3:
--Schedule start of the drawing 
-- When drawing starts
-	- sent to master "drawing-started"
-	- send to each player a new title with the message "title-assign"
-	- generate new timeout for drawing and schedule round start
--Manage reception of "drawing-submit" message
-	-Save the drawing
-	-Notify master that player submitted drawing with the message "drawing-added"
-	-check if all drawings were added
-		- true -> send message start round to master (empty by now); Cancel scheduled round start.
-- When round start
-	- send message start round to master (empty by now)

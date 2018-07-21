@@ -38,7 +38,7 @@ public class GameRepository {
 	}
 
 	public Game create(final Game game) {
-		final String sql = "INSERT INTO GAME (SESSION_ID,ROOM_CODE) VALUES(?,?)";
+		final String sql = "INSERT INTO GAME (SESSION_ID,ROOM_CODE,CREATED_DATE) VALUES(?,?,CURRENT TIMESTAMP)";
 
 		KeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {

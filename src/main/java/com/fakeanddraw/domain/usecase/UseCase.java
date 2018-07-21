@@ -1,6 +1,6 @@
 package com.fakeanddraw.domain.usecase;
 
-public interface UseCase<REQUEST, RESPONSE> {
+public interface UseCase<REQUEST> {
 
-	RESPONSE execute(REQUEST request);
+	void execute(REQUEST request);
 }

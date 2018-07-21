@@ -1,4 +1,4 @@
-package com.fakeanddraw.entrypoints.websocket;
+package com.fakeanddraw.entrypoints.websocket.message;
 
 public enum MessageType {
 	CREATE_GAME("game-create"),

@@ -1,4 +1,4 @@
-package com.fakeanddraw.entrypoints.websocket;
+package com.fakeanddraw.entrypoints.websocket.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

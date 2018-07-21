@@ -1,6 +1,6 @@
 package com.fakeanddraw.entrypoints.websocket.message.request;
 
-import com.fakeanddraw.entrypoints.websocket.MessagePayload;
+import com.fakeanddraw.entrypoints.websocket.message.MessagePayload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

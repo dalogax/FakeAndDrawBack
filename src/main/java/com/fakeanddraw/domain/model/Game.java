@@ -28,5 +28,4 @@ public class Game {
 	public static String getNewRoomCode() {
 		return RandomStringUtils.randomAlphanumeric(4).toUpperCase();
 	}
-
 }

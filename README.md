@@ -32,7 +32,7 @@ Using [clean architecture](https://github.com/mattia-battiston/clean-architectur
 
 All messages on both directions are based on [Flux action objects](https://github.com/redux-utilities/flux-standard-action) with the following structure:
 
-```
+```javascript
 {
   string type,
   object payload?,
@@ -40,7 +40,7 @@ All messages on both directions are based on [Flux action objects](https://githu
 } = message
 ```
 In case of error the payload will have the following structure:
-```
+```javascript
 {
   number code,
   string message
@@ -49,7 +49,7 @@ In case of error the payload will have the following structure:
 ### Common payloads
 #### Player Info Payload
 > Represents a player
-```
+```javascript
 {
 	number userId,
 	string nickname,
@@ -64,13 +64,13 @@ To identify the origin and destiny of every message we will use the following ic
 ### Game create 
 :tv: to :radio:
 > A game is created with a "game-create" message originated on the master client.
-```
+```javascript
 {
   string type = 'game-create'
 } = GameCreateMessage
 ```
 Example:
-```
+```javascript
 {
   "type": "game-create",
 }
@@ -78,7 +78,7 @@ Example:
 ### Game created
 :radio: to :tv:
 > If the game is succesfully created the server will send a "game-created" message to the master client.
-```
+```javascript
 {
   string type = 'game-created',
   GameCreatedPayload payload,
@@ -91,7 +91,7 @@ Example:
 } = GameCreatedPayload
 ```
 Example:
-```
+```javascript
 {
   "type": "game-created",
   "payload": {
@@ -104,7 +104,7 @@ Example:
 ### New User
 :iphone: to :radio:
 > When a player introduces his nickname and the game code and clicks on join game a new-user message is sent to the server
-```
+```javascript
 {
   string type = 'new-user',
   NewUserPayload payload
@@ -116,7 +116,7 @@ Example:
 } = NewUserPayload
 ```
 Example:
-```
+```javascript
 {
   "type": "new-user",
   "payload": {
@@ -128,7 +128,7 @@ Example:
 ### User Added
 :radio: to :tv: and :iphone:
 > If the user is succesfully added the server will send a "user-added" message to the master client and the added player.
-```
+```javascript
 {
   string type = 'user-added',
   PlayerInfoPayload payload,
@@ -136,7 +136,7 @@ Example:
 } = UserAddedMessage
 ```
 Example:
-```
+```javascript
 {
   "type": "user-added",
   "payload": {
@@ -150,7 +150,7 @@ Example:
 ### Drawing started
 :radio: to :tv:
 > The server will notify the master that the players will start drawing the suggested titles so master so he can show the drawing timeout.
-```
+```javascript
 {
   string type = 'drawing-started',
   DrawingStartedPayload payload
@@ -161,7 +161,7 @@ Example:
 } = DrawingStartedPayload
 ```
 Example:
-```
+```javascript
 {
   "type": "drawing-started",
   "payload": {
@@ -173,7 +173,7 @@ Example:
 ### Title assign
 :radio: to :iphone:
 > The server will send to each player a "title-assign" message with the suggested title they will try to represent with a drawing.
-```
+```javascript
 {
   string type = 'title-assign',
   TitleAssignPayload payload
@@ -185,7 +185,7 @@ Example:
 } = TitleAssignPayload
 ```
 Example:
-```
+```javascript
 {
   "type": "title-assign",
   "payload": {
@@ -198,7 +198,7 @@ Example:
 ### Drawing submit
 :iphone: to :radio:
 > When the player finishes his drawing he will send the drawing to the server with a The server will send to each player a "drawing-assign" message.
-```
+```javascript
 {
   string type = 'drawing-submit',
   DrawingSubmitPayload payload
@@ -209,7 +209,7 @@ Example:
 } = DrawingSubmitPayload
 ```
 Example:
-```
+```javascript
 {
   "type": "drawing-submit",
   "payload": {
@@ -221,20 +221,20 @@ Example:
 ### Drawing added
 :radio: to :tv: 
 > When a drawing is succesfully submitted the server will notify the master that a player finished drawing with the player info.
-```
+```javascript
 {
   string type = 'drawing-added',
   PlayerInfoPayload payload
 } = DrawingAddedMessage
 ```
 Example:
-```
+```javascript
 {
   "type": "drawing-added",
   "payload": {
     "userId": 1,
     "nickname": "Mike",
-		"avatarUrl": "https://media.giphy.com/media/3oFzm4W5S8U6VDnBdK/giphy.gif"
+    "avatarUrl": "https://media.giphy.com/media/3oFzm4W5S8U6VDnBdK/giphy.gif"
   }
 }
 ```

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorMessagePayload extends MessagePayload{	
-	Integer code;
-	String message;
+public class ErrorMessagePayload extends MessagePayload {
+  Integer code;
+  String message;
 }

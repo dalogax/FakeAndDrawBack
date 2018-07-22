@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AddPlayerToGameRequest {
-	
-	String roomCode; 
-	String playerSessionId;
-	String userName;
+
+  String roomCode;
+  String playerSessionId;
+  String userName;
 }

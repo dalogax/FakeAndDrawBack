@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Player {
 
-	Integer playerId;
-	String sessionId;
-	String userName;
+  Integer playerId;
+  String sessionId;
+  String userName;
 
-	public Player(String sessionId, String userName) {
-		this.sessionId = sessionId;
-		this.userName = userName;
-	}
+  public Player(String sessionId, String userName) {
+    this.sessionId = sessionId;
+    this.userName = userName;
+  }
 
 }

@@ -1,10 +1,8 @@
 package com.fakeanddraw.domain.usecase;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import com.fakeanddraw.domain.model.Game;
 import com.fakeanddraw.domain.model.Player;
 import com.fakeanddraw.domain.repository.GameRepository;
@@ -17,33 +15,36 @@ import com.fakeanddraw.entrypoints.websocket.message.response.UserAddedMessagePa
 
 @Component
 public class AddPlayerToGame implements UseCase<AddPlayerToGameRequest> {
-	
-	@Autowired
-	private ResponseController responseController;
 
-	@Autowired
-	private GameRepository gameRepository;
+  @Autowired
+  private ResponseController responseController;
 
-	@Autowired
-	private PlayerRepository playerRepository;
+  @Autowired
+  private GameRepository gameRepository;
 
-	public void execute(AddPlayerToGameRequest request) {
-		Optional<Game> game = gameRepository.findByCode(request.getRoomCode());
-		if (game.isPresent()) {
-			Player newPlayer = playerRepository.create(new Player(request.getPlayerSessionId(), request.getUserName()));
-			gameRepository.addPlayerToGame(game.get(), newPlayer);
+  @Autowired
+  private PlayerRepository playerRepository;
 
-			Message userAddedMessage = new Message(MessageType.USER_ADDED.getType(),
-					new UserAddedMessagePayload(newPlayer.getUserName()));
+  @Override
+  public void execute(AddPlayerToGameRequest request) {
+    Optional<Game> game = gameRepository.findByCode(request.getRoomCode());
+    if (game.isPresent()) {
+      Player newPlayer =
+          playerRepository.create(new Player(request.getPlayerSessionId(), request.getUserName()));
+      gameRepository.addPlayerToGame(game.get(), newPlayer);
 
-			// Notify master about new user joined
-			responseController.send(game.get().getSessionId(),userAddedMessage);
+      Message userAddedMessage = new Message(MessageType.USER_ADDED.getType(),
+          new UserAddedMessagePayload(newPlayer.getUserName()));
 
-			// Notify to player that he has been addes succesfully
-			responseController.send(newPlayer.getSessionId(),userAddedMessage);
-		} else {
-			// Should notify user that the game code is not valid
-			responseController.send(game.get().getSessionId(),new Message(MessageType.USER_ADDED.getType(),new ErrorMessagePayload(1, "Game code not valid")));
-		}
-	}
+      // Notify master about new user joined
+      responseController.send(game.get().getSessionId(), userAddedMessage);
+
+      // Notify to player that he has been addes succesfully
+      responseController.send(newPlayer.getSessionId(), userAddedMessage);
+    } else {
+      // Should notify user that the game code is not valid
+      responseController.send(game.get().getSessionId(), new Message(
+          MessageType.USER_ADDED.getType(), new ErrorMessagePayload(1, "Game code not valid")));
+    }
+  }
 }

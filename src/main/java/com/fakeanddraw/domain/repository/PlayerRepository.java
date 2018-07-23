@@ -23,11 +23,10 @@ public class PlayerRepository {
   private JdbcTemplate jdbcTemplate;
 
   @Transactional(readOnly = true)
-  public List<Player> findPlayersByGame(Integer gameId) {
-    return jdbcTemplate.query(
-        "SELECT P.PLAYER_ID, P.SESSION_ID, P.USERNAME FROM PLAYER P "
-            + "INNER JOIN GAME_PLAYER GP ON GP.PLAYER_ID = P.PLAYER_ID " + "WHERE GP.GAME_ID = ? ",
-        new Object[] {gameId}, new PlayerRowMapper());
+  public List<Player> findPlayersByMatch(Integer matchId) {
+    return jdbcTemplate.query("SELECT P.PLAYER_ID, P.SESSION_ID, P.USERNAME FROM PLAYER P "
+        + "INNER JOIN MATCH_PLAYER MP ON MP.PLAYER_ID = P.PLAYER_ID " + "WHERE MP.MATCH_ID = ? ",
+        new Object[] {matchId}, new PlayerRowMapper());
   }
 
   public Player create(final Player player) {

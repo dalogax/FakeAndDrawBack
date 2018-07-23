@@ -1,6 +1,7 @@
 package com.fakeanddraw.domain.model;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,14 +14,13 @@ public class Game {
 
   Integer gameId;
   String sessionId;
-  String roomCode;
-
-  HashMap<String, Player> players;
+  String gameCode;
+  List<Match> matches;
 
   public Game(String sessionId) {
     this.sessionId = sessionId;
-    this.roomCode = getNewRoomCode();
-    this.players = new HashMap<String, Player>();
+    this.gameCode = getNewRoomCode();
+    this.matches = new ArrayList<Match>();
   }
 
   public static String getNewRoomCode() {

@@ -1,12 +1,12 @@
 package com.fakeanddraw.domain.usecase;
 
 import java.sql.Timestamp;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.fakeanddraw.domain.model.Game;
+import com.fakeanddraw.domain.model.GameFactory;
 import com.fakeanddraw.domain.model.Match;
+import com.fakeanddraw.domain.model.MatchFactory;
 import com.fakeanddraw.domain.repository.GameRepository;
 import com.fakeanddraw.domain.repository.MatchRepository;
 import com.fakeanddraw.entrypoints.websocket.ResponseController;
@@ -26,20 +26,25 @@ public class CreateGame implements UseCase<String> {
   @Autowired
   private MatchRepository matchRepository;
 
-  @Value("${game.timeout.join}")
-  Integer joinTimeout;
+  @Autowired
+  private GameFactory gameFactory;
+
+  @Autowired
+  private MatchFactory matchFactory;
 
   @Override
   public void execute(String sessionId) {
-    Game newGame = gameRepository.create(new Game(sessionId));
+    Game newGame = gameRepository.create(gameFactory.createNewGame(sessionId));
 
-    Match newMatch = matchRepository.create(new Match(newGame));
+    Match newMatch = matchFactory.createNewMatch(newGame);
 
-    Message gameCreatedMessage = new Message(MessageType.GAME_CREATED.getType(),
-        new GameCreatedMessagePayload(newGame.getGameCode(),
-            new Timestamp(new DateTime().plusSeconds(joinTimeout).getMillis())));
+    newMatch = matchRepository.create(newMatch);
 
-    // Notify master with room code
+    Message gameCreatedMessage =
+        new Message(MessageType.GAME_CREATED.getType(), new GameCreatedMessagePayload(
+            newGame.getGameCode(), new Timestamp(newMatch.getJoinTimeout().getMillis())));
+
+    // Notify master with room code and timeout
     responseController.send(sessionId, gameCreatedMessage);
   }
 }

@@ -17,7 +17,7 @@ public class Message {
 
   private String type;
   private Map<String, Object> payload;
-  private Boolean error;
+  private Boolean error = false;
 
   public Message(String type, MessagePayload messagePayload) {
     super();

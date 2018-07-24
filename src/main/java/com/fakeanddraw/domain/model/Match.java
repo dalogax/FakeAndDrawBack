@@ -1,13 +1,13 @@
 package com.fakeanddraw.domain.model;
 
 import java.util.HashMap;
-import lombok.AllArgsConstructor;
+import org.joda.time.DateTime;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Match {
 
   Integer matchId;
@@ -16,12 +16,12 @@ public class Match {
 
   MatchStatus status;
 
+  DateTime createdDate;
+  DateTime joinTimeout;
+  DateTime drawTimeout;
+
   HashMap<String, Player> players;
 
-  public Match(Game game) {
-    this.game = game;
-    this.status = MatchStatus.JOIN;
-    this.players = new HashMap<String, Player>();
-  }
+
 
 }

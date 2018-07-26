@@ -40,7 +40,7 @@ public class AddPlayerToGame implements UseCase<AddPlayerToGameRequest> {
       // Notify master about new user joined
       responseController.send(match.get().getGame().getSessionId(), userAddedMessage);
 
-      // Notify to player that he has been addes succesfully
+      // Notify to player that he has been added succesfully
       responseController.send(newPlayer.getSessionId(), userAddedMessage);
     } else {
       // Should notify user that the game code is not valid

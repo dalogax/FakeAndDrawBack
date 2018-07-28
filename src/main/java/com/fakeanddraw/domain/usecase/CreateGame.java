@@ -10,7 +10,8 @@ import com.fakeanddraw.domain.model.MatchFactory;
 import com.fakeanddraw.domain.repository.GameRepository;
 import com.fakeanddraw.domain.repository.MatchRepository;
 import com.fakeanddraw.entrypoints.scheduler.Scheduler;
-import com.fakeanddraw.entrypoints.scheduler.ScheduledTask;
+import com.fakeanddraw.entrypoints.scheduler.TimeoutFactory;
+import com.fakeanddraw.entrypoints.scheduler.TimeoutType;
 import com.fakeanddraw.entrypoints.websocket.ResponseController;
 import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;
@@ -37,24 +38,25 @@ public class CreateGame implements UseCase<String> {
   @Autowired
   private MatchFactory matchFactory;
 
+  @Autowired
+  private TimeoutFactory timeoutFactory;
+
   @Override
   public void execute(String sessionId) {
+    // Create new game
     Game newGame = gameRepository.create(gameFactory.createNewGame(sessionId));
+    // Create new match
+    Match newMatch = matchRepository.create(matchFactory.createNewMatch(newGame));
 
-    Match newMatch = matchFactory.createNewMatch(newGame);
 
-    newMatch = matchRepository.create(newMatch);
-
+    // Notify master client with game code and timeout
     Message gameCreatedMessage =
         new Message(MessageType.GAME_CREATED.getType(), new GameCreatedMessagePayload(
             newGame.getGameCode(), new Timestamp(newMatch.getJoinTimeout().getMillis())));
-
-    // Notify master with room code and timeout
     responseController.send(sessionId, gameCreatedMessage);
 
     // Schedule join timeout
-    taskScheduler.schedule(
-        new ScheduledTask("Join Timeout triggered for game " + newGame.getGameCode()),
+    taskScheduler.schedule(timeoutFactory.createTimeout(TimeoutType.JOIN, newMatch.getMatchId()),
         newMatch.getJoinTimeout().toDate());
   }
 }

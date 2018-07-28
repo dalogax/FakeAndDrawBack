@@ -8,10 +8,10 @@ import com.fakeanddraw.domain.model.Player;
 import com.fakeanddraw.domain.repository.MatchRepository;
 import com.fakeanddraw.domain.repository.PlayerRepository;
 import com.fakeanddraw.entrypoints.websocket.ResponseController;
-import com.fakeanddraw.entrypoints.websocket.message.ErrorMessagePayload;
+import com.fakeanddraw.entrypoints.websocket.message.ErrorPayload;
 import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;
-import com.fakeanddraw.entrypoints.websocket.message.response.UserAddedMessagePayload;
+import com.fakeanddraw.entrypoints.websocket.message.response.UserAddedPayload;
 
 @Component
 public class AddPlayerToGame implements UseCase<AddPlayerToGameRequest> {
@@ -35,7 +35,7 @@ public class AddPlayerToGame implements UseCase<AddPlayerToGameRequest> {
       matchRepository.addPlayerToMatch(match.get(), newPlayer);
 
       Message userAddedMessage = new Message(MessageType.USER_ADDED.getType(),
-          new UserAddedMessagePayload(newPlayer.getUserName()));
+          new UserAddedPayload(newPlayer.getUserName()));
 
       // Notify master about new user joined
       responseController.send(match.get().getGame().getSessionId(), userAddedMessage);
@@ -45,7 +45,7 @@ public class AddPlayerToGame implements UseCase<AddPlayerToGameRequest> {
     } else {
       // Should notify user that the game code is not valid
       responseController.send(request.getPlayerSessionId(), new Message(
-          MessageType.USER_ADDED.getType(), new ErrorMessagePayload(1, "Game code not valid")));
+          MessageType.USER_ADDED.getType(), new ErrorPayload(1, "Game code not valid")));
     }
   }
 }

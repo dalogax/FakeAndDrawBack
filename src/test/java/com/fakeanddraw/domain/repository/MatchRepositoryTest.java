@@ -35,16 +35,35 @@ public class MatchRepositoryTest {
   private MatchFactory matchFactory;
 
   @Test
+  public void createAndFindById() {
+
+    Game game = gameRepository.create(gameFactory.createNewGame("123asd"));
+
+    Match match = matchRepository.create(matchFactory.createNewMatch(game));
+
+    assertNotNull(match);
+    assertNotNull(match.getMatchId());
+    assertEquals(game.getGameId(), match.getGame().getGameId());
+
+    Optional<Match> matchOptional = matchRepository.findMatchById(-1);
+
+    assertFalse(matchOptional.isPresent());
+
+    matchOptional = matchRepository.findMatchById(match.getMatchId());
+
+    assertTrue(matchOptional.isPresent());
+    assertEquals(match.getStatus(), matchOptional.get().getStatus());
+    assertEquals(match.getCreatedDate(), matchOptional.get().getCreatedDate());
+    assertEquals(match.getJoinTimeout(), matchOptional.get().getJoinTimeout());
+    assertEquals(match.getDrawTimeout(), matchOptional.get().getDrawTimeout());
+  }
+
+  @Test
   public void createAndFindByGameCode() {
 
     Game game = gameRepository.create(gameFactory.createNewGame("123asd"));
 
-    Match match = matchFactory.createNewMatch(game);
-    match.setJoinTimeout(match.getCreatedDate());
-    match.setDrawTimeout(match.getCreatedDate());
-
-
-    match = matchRepository.create(match);
+    Match match = matchRepository.create(matchFactory.createNewMatch(game));
 
     assertNotNull(match);
     assertNotNull(match.getMatchId());

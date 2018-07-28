@@ -1,4 +1,4 @@
-package com.fakeanddraw.entrypoints.websocket.message.response;
+package com.fakeanddraw.entrypoints.websocket.message.request;
 
 import com.fakeanddraw.entrypoints.websocket.message.MessagePayload;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAddedMessagePayload extends MessagePayload {
+public class NewUserPayload extends MessagePayload {
 
   private String nickname;
+  private String gameCode;
 }

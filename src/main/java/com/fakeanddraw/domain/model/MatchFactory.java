@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 public class MatchFactory {
 
   @Value("${game.timeout.join.seconds}")
-  Integer joinTimeoutSeconds;
+  private Integer joinTimeoutSeconds;
 
   @Value("${game.timeout.draw.seconds}")
-  Integer drawTimeoutSeconds;
+  private Integer drawTimeoutSeconds;
 
   public Match createEmptyMatch() {
     return new Match();

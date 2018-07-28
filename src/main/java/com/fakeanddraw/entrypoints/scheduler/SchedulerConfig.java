@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class SchedulerConfig {
 
   @Value("${scheduler.pool.size}")
-  Integer schedulerPoolSize;
+  private Integer schedulerPoolSize;
 
   @Bean
   public Scheduler threadPoolTaskScheduler() {

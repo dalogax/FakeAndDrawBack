@@ -21,7 +21,4 @@ public class Match {
   DateTime drawTimeout;
 
   HashMap<String, Player> players;
-
-
-
 }

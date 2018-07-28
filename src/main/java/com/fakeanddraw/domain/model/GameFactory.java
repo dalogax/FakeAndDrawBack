@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class GameFactory {
 
   @Value("${game.code.char.num}")
-  Integer gameCodeCharNum;
+  private Integer gameCodeCharNum;
 
   public Game createEmptyGame() {
     return new Game();

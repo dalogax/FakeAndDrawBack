@@ -11,7 +11,7 @@ import com.fakeanddraw.domain.usecase.AddPlayerToGameRequest;
 import com.fakeanddraw.domain.usecase.CreateGame;
 import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;
-import com.fakeanddraw.entrypoints.websocket.message.request.NewUserMessagePayload;
+import com.fakeanddraw.entrypoints.websocket.message.request.NewUserPayload;
 
 @Controller
 public class RequestController {
@@ -34,8 +34,8 @@ public class RequestController {
           break;
 
         case NEW_USER:
-          NewUserMessagePayload newUserMessagePayload =
-              (NewUserMessagePayload) message.getMessagePayload();
+          NewUserPayload newUserMessagePayload =
+              (NewUserPayload) message.getMessagePayload();
 
           addPlayerToGame.execute(new AddPlayerToGameRequest(newUserMessagePayload.getGameCode(),
               sessionId, newUserMessagePayload.getNickname()));

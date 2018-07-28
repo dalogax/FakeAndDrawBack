@@ -15,7 +15,7 @@ import com.fakeanddraw.entrypoints.scheduler.TimeoutType;
 import com.fakeanddraw.entrypoints.websocket.ResponseController;
 import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;
-import com.fakeanddraw.entrypoints.websocket.message.response.GameCreatedMessagePayload;
+import com.fakeanddraw.entrypoints.websocket.message.response.GameCreatedPayload;
 
 @Component
 public class CreateGame implements UseCase<String> {
@@ -51,7 +51,7 @@ public class CreateGame implements UseCase<String> {
 
     // Notify master client with game code and timeout
     Message gameCreatedMessage =
-        new Message(MessageType.GAME_CREATED.getType(), new GameCreatedMessagePayload(
+        new Message(MessageType.GAME_CREATED.getType(), new GameCreatedPayload(
             newGame.getGameCode(), new Timestamp(newMatch.getJoinTimeout().getMillis())));
     responseController.send(sessionId, gameCreatedMessage);
 

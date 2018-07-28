@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameCreatedMessagePayload extends MessagePayload {
+public class GameCreatedPayload extends MessagePayload {
 
   private String gameCode;
   private Timestamp lifespanTimestamp;

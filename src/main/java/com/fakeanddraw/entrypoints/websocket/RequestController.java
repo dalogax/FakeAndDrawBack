@@ -9,18 +9,24 @@ import org.springframework.stereotype.Controller;
 import com.fakeanddraw.domain.usecase.AddPlayerToGame;
 import com.fakeanddraw.domain.usecase.AddPlayerToGameRequest;
 import com.fakeanddraw.domain.usecase.CreateGame;
+import com.fakeanddraw.domain.usecase.DrawingSubmit;
+import com.fakeanddraw.domain.usecase.DrawingSubmitRequest;
 import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;
+import com.fakeanddraw.entrypoints.websocket.message.request.DrawingSubmitPayload;
 import com.fakeanddraw.entrypoints.websocket.message.request.NewUserPayload;
 
 @Controller
 public class RequestController {
 
   @Autowired
-  CreateGame createGame;
+  private CreateGame createGame;
 
   @Autowired
-  AddPlayerToGame addPlayerToGame;
+  private AddPlayerToGame addPlayerToGame;
+
+  @Autowired
+  private DrawingSubmit drawingSubmit;
 
   private final Logger logger = LoggerFactory.getLogger(RequestController.class);
 
@@ -34,13 +40,19 @@ public class RequestController {
           break;
 
         case NEW_USER:
-          NewUserPayload newUserMessagePayload =
-              (NewUserPayload) message.getMessagePayload();
+          NewUserPayload newUserMessagePayload = (NewUserPayload) message.getMessagePayload();
 
           addPlayerToGame.execute(new AddPlayerToGameRequest(newUserMessagePayload.getGameCode(),
               sessionId, newUserMessagePayload.getNickname()));
 
           break;
+
+        case DRAWING_SUBMIT:
+          DrawingSubmitPayload drawingSubmitPayload =
+              (DrawingSubmitPayload) message.getMessagePayload();
+
+          drawingSubmit
+              .execute(new DrawingSubmitRequest(sessionId, drawingSubmitPayload.getImage()));
 
         default:
           logger.error("Message not supported received: {}", message);

@@ -14,6 +14,7 @@ import com.fakeanddraw.dataproviders.repository.TitleRepository;
 import com.fakeanddraw.domain.model.Drawing;
 import com.fakeanddraw.domain.model.MasterTitle;
 import com.fakeanddraw.domain.model.Match;
+import com.fakeanddraw.domain.model.MatchStatus;
 import com.fakeanddraw.domain.model.Player;
 import com.fakeanddraw.domain.model.PlayerDrawing;
 import com.fakeanddraw.entrypoints.scheduler.Scheduler;
@@ -24,6 +25,7 @@ import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;
 import com.fakeanddraw.entrypoints.websocket.message.response.DrawingStartedPayload;
 import com.fakeanddraw.entrypoints.websocket.message.response.TitleAssignPayload;
+import javassist.NotFoundException;
 
 @Component
 public class StartMatch implements UseCase<Integer> {
@@ -96,9 +98,12 @@ public class StartMatch implements UseCase<Integer> {
             match.getDrawTimeout().toDate());
 
         // Update Match status to Draw
-        /*
-         * TODO Update Match status to Draw
-         */
+        match.setStatus(MatchStatus.DRAW);
+        try {
+          matchRepository.update(match);
+        } catch (NotFoundException e) {
+          //Something very weird happened
+        }
 
       } else {
         logger.info("Not enough players to start the match {}. {} players found", matchId,

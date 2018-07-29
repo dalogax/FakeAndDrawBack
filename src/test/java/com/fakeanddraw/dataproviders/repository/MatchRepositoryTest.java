@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.repository;
+package com.fakeanddraw.dataproviders.repository;
 
 
 import static org.junit.Assert.assertEquals;
@@ -109,7 +109,7 @@ public class MatchRepositoryTest {
   @Test(expected = NotFoundException.class)
   public void updateNotFound() throws NotFoundException {
     Match match = matchFactory.createEmptyMatch();
-    match.setMatchId(1);
+    match.setMatchId(-1);
     match.setStatus(MatchStatus.JOIN);
     matchRepository.update(match);
   }

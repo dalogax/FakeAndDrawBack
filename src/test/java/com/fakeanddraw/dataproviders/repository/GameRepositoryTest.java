@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.repository;
+package com.fakeanddraw.dataproviders.repository;
 
 
 import static org.junit.Assert.assertEquals;
@@ -26,7 +26,7 @@ public class GameRepositoryTest {
 
   @Test
   public void createAndFindById() {
-    Optional<Game> gameOptional = gameRepository.findById(1);
+    Optional<Game> gameOptional = gameRepository.findById(-1);
     assertFalse(gameOptional.isPresent());
 
     Game game = gameRepository.create(gameFactory.createNewGame("123asd"));

@@ -5,8 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.fakeanddraw.dataproviders.repository.MatchRepository;
 import com.fakeanddraw.domain.model.Match;
-import com.fakeanddraw.domain.repository.MatchRepository;
 
 @Component
 public class StartRound implements UseCase<Integer> {

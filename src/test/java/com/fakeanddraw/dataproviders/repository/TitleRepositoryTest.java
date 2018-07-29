@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.repository;
+package com.fakeanddraw.dataproviders.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

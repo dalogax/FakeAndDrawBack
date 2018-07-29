@@ -9,15 +9,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.fakeanddraw.domain.model.MasterTitle;
-import com.fakeanddraw.domain.repository.TitleRepository;
 
 @Repository
-public class TitleRepositoryImpl implements TitleRepository {
+public class TitleRepository {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
-  @Override
   @Transactional(readOnly = true)
   public List<MasterTitle> getMasterTitles(int numTitles) {
     /*

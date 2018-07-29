@@ -15,15 +15,13 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.fakeanddraw.domain.model.Player;
-import com.fakeanddraw.domain.repository.PlayerRepository;
 
 @Repository
-public class PlayerRepositoryImpl implements PlayerRepository {
+public class PlayerRepository {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
-  @Override
   @Transactional(readOnly = true)
   public List<Player> findPlayersByMatch(Integer matchId) {
     return jdbcTemplate.query("SELECT P.PLAYER_ID, P.SESSION_ID, P.USERNAME FROM PLAYER P "
@@ -31,7 +29,6 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         new Object[] {matchId}, new PlayerRowMapper());
   }
 
-  @Override
   public Player create(final Player player) {
     final String sql = "INSERT INTO PLAYER (SESSION_ID,USERNAME) VALUES(?,?)";
 

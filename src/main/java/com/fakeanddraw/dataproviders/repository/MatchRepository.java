@@ -23,11 +23,10 @@ import com.fakeanddraw.domain.model.Match;
 import com.fakeanddraw.domain.model.MatchFactory;
 import com.fakeanddraw.domain.model.MatchStatus;
 import com.fakeanddraw.domain.model.Player;
-import com.fakeanddraw.domain.repository.MatchRepository;
 import javassist.NotFoundException;
 
 @Repository
-public class MatchRepositoryImpl implements MatchRepository {
+public class MatchRepository {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
@@ -38,7 +37,6 @@ public class MatchRepositoryImpl implements MatchRepository {
   @Autowired
   private MatchFactory matchFactory;
 
-  @Override
   @Transactional(readOnly = true)
   public Optional<Match> findLastMatchByGameCode(String gameCode) {
     try {
@@ -52,7 +50,6 @@ public class MatchRepositoryImpl implements MatchRepository {
     }
   }
 
-  @Override
   @Transactional(readOnly = true)
   public Optional<Match> findMatchById(Integer matchId) {
     try {
@@ -67,7 +64,6 @@ public class MatchRepositoryImpl implements MatchRepository {
   }
 
 
-  @Override
   public Match create(final Match match) {
     final String sql =
         "INSERT INTO `MATCH` (GAME_ID,STATUS,CREATED_DATE,JOIN_TIMEOUT,DRAW_TIMEOUT) VALUES(?,?,?,?,?)";
@@ -91,7 +87,6 @@ public class MatchRepositoryImpl implements MatchRepository {
     return match;
   }
 
-  @Override
   public void update(final Match match) throws NotFoundException {
     final String sql = "UPDATE `MATCH` SET STATUS = ? WHERE MATCH_ID = ?";
 
@@ -110,7 +105,6 @@ public class MatchRepositoryImpl implements MatchRepository {
     }
   }
 
-  @Override
   public void addPlayerToMatch(Match match, Player newPlayer) {
     final String sql = "INSERT INTO MATCH_PLAYER (MATCH_ID,PLAYER_ID) VALUES(?,?)";
 

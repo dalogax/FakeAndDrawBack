@@ -17,10 +17,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.fakeanddraw.domain.model.Game;
 import com.fakeanddraw.domain.model.GameFactory;
-import com.fakeanddraw.domain.repository.GameRepository;
 
 @Repository
-public class GameRepositoryImpl implements GameRepository {
+public class GameRepository {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;

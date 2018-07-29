@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import com.fakeanddraw.domain.model.Drawing;
 import com.fakeanddraw.domain.model.Game;
 import com.fakeanddraw.domain.model.GameFactory;
@@ -20,6 +21,7 @@ import javassist.NotFoundException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class DrawingRepositoryTest {
 
   @Autowired
@@ -44,10 +46,7 @@ public class DrawingRepositoryTest {
 
     Match match = matchRepository.create(matchFactory.createNewMatch(game));
 
-    Optional<Match> matchOptional = matchRepository.findMatchById(match.getMatchId());
-
-    Drawing drawing = new Drawing();
-    drawing.setMatch(match);
+    Drawing drawing = new Drawing(match);
     drawing = drawingRepository.create(drawing);
 
     assertNotNull(drawing.getDrawingId());

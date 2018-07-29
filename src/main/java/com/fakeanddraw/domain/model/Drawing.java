@@ -12,4 +12,9 @@ public class Drawing {
   Integer drawingId;
   Match match;
   String image;
+  
+  public Drawing (Match match){
+    super();
+    this.match = match;
+  }
 }

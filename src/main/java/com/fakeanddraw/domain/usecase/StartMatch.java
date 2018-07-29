@@ -69,6 +69,10 @@ public class StartMatch implements UseCase<Integer> {
 
         // Send title assign message to each player
         List<MasterTitle> titles = titleRepository.getMasterTitles(players.size());
+        /*
+         * TODO Save assigned titles
+         */
+
         for (int i = 0; i < players.size(); i++) {
           Message titleAssignMessage = new Message(MessageType.TITLE_ASSIGN.getType(),
               new TitleAssignPayload(new Timestamp(match.getDrawTimeout().getMillis()),

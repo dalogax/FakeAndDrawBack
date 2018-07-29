@@ -35,7 +35,7 @@ public class AddPlayerToGame implements UseCase<AddPlayerToGameRequest> {
       matchRepository.addPlayerToMatch(match.get(), newPlayer);
 
       Message userAddedMessage = new Message(MessageType.USER_ADDED.getType(),
-          new UserAddedPayload(newPlayer.getUserName()));
+          new UserAddedPayload(newPlayer.getPlayerId(), newPlayer.getUserName()));
 
       // Notify master about new user joined
       responseController.send(match.get().getGame().getSessionId(), userAddedMessage);

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAddedPayload extends MessagePayload {
-
+  private Integer userId;
   private String nickname;
 }

@@ -85,6 +85,12 @@ public class DrawingRepositoryTest {
     titleRepository.create(new Title(drawing, player, "Test title"));
     matchRepository.addPlayerToMatch(match, player);
 
+    Drawing drawing2 = new Drawing(match);
+    drawing2 = drawingRepository.create(drawing2);
+    Player player2 = playerRepository.create(new Player("456asd", "John"));
+    titleRepository.create(new Title(drawing2, player2, "Test title 2"));
+    matchRepository.addPlayerToMatch(match, player2);
+
     Optional<Drawing> optionalDrawing = drawingRepository
         .findActiveDrawingByPlayerSessionIdAndMatchId(player.getSessionId(), match.getMatchId());
 

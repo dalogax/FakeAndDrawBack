@@ -80,7 +80,7 @@ public class DrawingRepository {
               + " INNER JOIN GAME G ON M.GAME_ID = G.GAME_ID"
               + " INNER JOIN MATCH_PLAYER MP ON M.MATCH_ID = MP.MATCH_ID"
               + " INNER JOIN PLAYER P ON MP.PLAYER_ID = P.PLAYER_ID"
-              + " INNER JOIN TITLE T ON MP.PLAYER_ID = T.PLAYER_ID"
+              + " INNER JOIN TITLE T ON MP.PLAYER_ID = T.PLAYER_ID AND T.DRAWING_ID = D.DRAWING_ID"
               + " WHERE M.MATCH_ID = ? AND P.SESSION_ID = ?",
           new Object[] {matchId, playerSessionId}, new DrawingRowMapper()));
     } catch (EmptyResultDataAccessException e) {

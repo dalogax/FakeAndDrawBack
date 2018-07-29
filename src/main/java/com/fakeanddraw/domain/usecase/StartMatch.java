@@ -3,18 +3,20 @@ package com.fakeanddraw.domain.usecase;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import com.fakeanddraw.dataproviders.repository.DrawingRepository;
 import com.fakeanddraw.dataproviders.repository.MatchRepository;
 import com.fakeanddraw.dataproviders.repository.PlayerRepository;
 import com.fakeanddraw.dataproviders.repository.TitleRepository;
+import com.fakeanddraw.domain.model.Drawing;
 import com.fakeanddraw.domain.model.MasterTitle;
 import com.fakeanddraw.domain.model.Match;
+import com.fakeanddraw.domain.model.MatchStatus;
 import com.fakeanddraw.domain.model.Player;
+import com.fakeanddraw.domain.model.PlayerDrawing;
 import com.fakeanddraw.entrypoints.scheduler.Scheduler;
 import com.fakeanddraw.entrypoints.scheduler.TimeoutFactory;
 import com.fakeanddraw.entrypoints.scheduler.TimeoutType;
@@ -23,81 +25,95 @@ import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;
 import com.fakeanddraw.entrypoints.websocket.message.response.DrawingStartedPayload;
 import com.fakeanddraw.entrypoints.websocket.message.response.TitleAssignPayload;
+import javassist.NotFoundException;
 
 @Component
 public class StartMatch implements UseCase<Integer> {
 
-	@Autowired
-	private ResponseController responseController;
+  @Autowired
+  private ResponseController responseController;
 
-	@Autowired
-	private MatchRepository matchRepository;
+  @Autowired
+  private MatchRepository matchRepository;
 
-	@Autowired
-	private PlayerRepository playerRepository;
+  @Autowired
+  private PlayerRepository playerRepository;
 
-	@Autowired
-	private TitleRepository titleRepository;
+  @Autowired
+  private TitleRepository titleRepository;
 
-	@Autowired
-	private Scheduler taskScheduler;
+  @Autowired
+  private DrawingRepository drawingRepository;
 
-	@Autowired
-	private TimeoutFactory timeoutFactory;
+  @Autowired
+  private Scheduler taskScheduler;
 
-	private final Logger logger = LoggerFactory.getLogger(StartMatch.class);
+  @Autowired
+  private TimeoutFactory timeoutFactory;
 
-	@Override
-	public void execute(Integer matchId) {
-		logger.info("StartMatch triggered for match {}", matchId);
+  private final Logger logger = LoggerFactory.getLogger(StartMatch.class);
 
-		// Get the match
-		Optional<Match> optionalMatch = matchRepository.findMatchById(matchId);
+  @Override
+  public void execute(Integer matchId) {
+    logger.info("StartMatch triggered for match {}", matchId);
 
-		if (optionalMatch.isPresent()) {
-			Match match = optionalMatch.get();
+    // Get the match
+    Optional<Match> optionalMatch = matchRepository.findMatchById(matchId);
 
-			// Get players
-			List<Player> players = playerRepository.findPlayersByMatch(matchId);
+    if (optionalMatch.isPresent()) {
+      Match match = optionalMatch.get();
 
-			// Check that at least 2 players joined
-			if (players.size() >= 2) {
+      // Get players
+      List<Player> players = playerRepository.findPlayersByMatch(matchId);
 
-				// Send drawing started message to master client
-				Message drawingStartedMessage = new Message(MessageType.DRAWING_STARTED.getType(),
-						new DrawingStartedPayload(new Timestamp(match.getDrawTimeout().getMillis())));
-				responseController.send(match.getGame().getSessionId(), drawingStartedMessage);
+      // Check that at least 2 players joined
+      if (players.size() >= 2) {
 
-				// Send title assign message to each player
-				List<MasterTitle> titles = titleRepository.getMasterTitles(players.size());
-				/*
-				 * TODO Save assigned titles
-				 */
+        // Send drawing started message to master client
+        Message drawingStartedMessage = new Message(MessageType.DRAWING_STARTED.getType(),
+            new DrawingStartedPayload(new Timestamp(match.getDrawTimeout().getMillis())));
+        responseController.send(match.getGame().getSessionId(), drawingStartedMessage);
 
-				for (int i = 0; i < players.size(); i++) {
-					Message titleAssignMessage = new Message(MessageType.TITLE_ASSIGN.getType(), new TitleAssignPayload(
-							new Timestamp(match.getDrawTimeout().getMillis()), titles.get(i).getDescription()));
-					responseController.send(players.get(i).getSessionId(), titleAssignMessage);
-				}
+        // Get a new title for each player
+        List<MasterTitle> titles = titleRepository.getMasterTitles(players.size());
+        for (int i = 0; i < players.size(); i++) {
+          
+          //Save the title with an empty drawing
+          Drawing drawing = new Drawing(match);
+          drawing = drawingRepository.create(drawing);
+          PlayerDrawing playerDrawing =
+              new PlayerDrawing(drawing, players.get(i), titles.get(i).getDescription());
+          titleRepository.create(playerDrawing);
 
-				// Schedule new draw timeout. It should trigger StartRound use
-				// case.
-				taskScheduler.schedule(timeoutFactory.createTimeout(TimeoutType.DRAW, match.getMatchId()),
-						match.getDrawTimeout().toDate());
+          // Send title assign message to each player
+          Message titleAssignMessage = new Message(MessageType.TITLE_ASSIGN.getType(),
+              new TitleAssignPayload(new Timestamp(match.getDrawTimeout().getMillis()),
+                  playerDrawing.getDescription()));
+          responseController.send(playerDrawing.getPlayer().getSessionId(), titleAssignMessage);
+        }
 
-				// Update Match status to Draw
-				/*
-				 * TODO Update Match status to Draw
-				 */
+        // Schedule new draw timeout. It should trigger StartRound use
+        // case.
+        taskScheduler.schedule(timeoutFactory.createTimeout(TimeoutType.DRAW, match.getMatchId()),
+            match.getDrawTimeout().toDate());
 
-			} else {
-				logger.info("Not enough players to start the match {}. {} players found", matchId, players.size());
-				/*
-				 * TODO Should extend join time and notify master
-				 */
-			}
-		} else {
-			logger.info("Something went wrong, match {} not found", matchId);
-		}
-	}
+        // Update Match status to Draw
+        match.setStatus(MatchStatus.DRAW);
+        try {
+          matchRepository.update(match);
+        } catch (NotFoundException e) {
+          //Something very weird happened
+        }
+
+      } else {
+        logger.info("Not enough players to start the match {}. {} players found", matchId,
+            players.size());
+        /*
+         * TODO Should extend join time and notify master
+         */
+      }
+    } else {
+      logger.info("Something went wrong, match {} not found", matchId);
+    }
+  }
 }

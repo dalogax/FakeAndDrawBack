@@ -23,10 +23,9 @@ public class TitleRepository {
 
   @Transactional(readOnly = true)
   public List<MasterTitle> getMasterTitles(int numTitles) {
-    /*
-     * TODO make it random
-     */
-    return jdbcTemplate.query("SELECT MASTER_TITLE_ID, DESCRIPTION FROM MASTER_TITLE LIMIT ?",
+    return jdbcTemplate.query("SELECT MASTER_TITLE_ID, DESCRIPTION FROM MASTER_TITLE "
+        + "ORDER BY RAND() "
+        + "FETCH FIRST ? ROWS ONLY",
         new Object[] {numTitles}, new MasterTitleRowMapper());
   }
 

@@ -55,8 +55,7 @@ public class MatchRepository {
     try {
       return Optional.of(jdbcTemplate.queryForObject(
           "SELECT M.MATCH_ID, M.STATUS, M.CREATED_DATE, M.JOIN_TIMEOUT, M.DRAW_TIMEOUT, G.GAME_ID, G.SESSION_ID, G.GAME_CODE FROM `MATCH` M"
-              + " INNER JOIN GAME G ON M.GAME_ID = G.GAME_ID WHERE M.MATCH_ID = ?"
-              + " FETCH FIRST ROW ONLY",
+              + " INNER JOIN GAME G ON M.GAME_ID = G.GAME_ID WHERE M.MATCH_ID = ?",
           new Object[] {matchId}, new MatchRowMapper()));
     } catch (EmptyResultDataAccessException e) {
       return Optional.empty();

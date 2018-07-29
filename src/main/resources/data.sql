@@ -1,4 +1,15 @@
-INSERT INTO MASTER_TITLE(MASTER_TITLE_ID, DESCRIPTION) VALUES(1,'Flying cow');
-INSERT INTO MASTER_TITLE(MASTER_TITLE_ID, DESCRIPTION) VALUES(2,'GoT Winterfell');
-INSERT INTO MASTER_TITLE(MASTER_TITLE_ID, DESCRIPTION) VALUES(3,'Siri');
-INSERT INTO MASTER_TITLE(MASTER_TITLE_ID, DESCRIPTION) VALUES(4,'Cooking robot');
+INSERT INTO MASTER_TITLE(DESCRIPTION) VALUES
+('Flying cow'),
+('GoT Winterfell'),
+('Apple Siri'),
+('Banana guitar'),
+('Software bug'),
+('The Rolling Stones'),
+('Braveheart'),
+('Long night'),
+('Dirty dancing'),
+('Black friday'),
+('I am in the laundry machine'),
+('The black pearl'),
+('Dude, where is my car?'),
+('Cooking robot');

@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class DrawingSubmitRequest {
   private String sessionId;
-  private String base64Image;
+  private String image;
 }

@@ -1,6 +1,7 @@
 package com.fakeanddraw.dataproviders.repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.List;
@@ -18,7 +19,7 @@ import com.fakeanddraw.domain.model.MasterTitle;
 import com.fakeanddraw.domain.model.Match;
 import com.fakeanddraw.domain.model.MatchFactory;
 import com.fakeanddraw.domain.model.Player;
-import com.fakeanddraw.domain.model.PlayerDrawing;
+import com.fakeanddraw.domain.model.Title;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -55,26 +56,43 @@ public class TitleRepositoryTest {
   }
 
   @Test
-  public void create() {
+  public void createAndFindByPlayerSessionId() {
 
     Game game = gameRepository.create(gameFactory.createNewGame("123asd"));
 
     Match match = matchRepository.create(matchFactory.createNewMatch(game));
 
-    Optional<Match> matchOptional = matchRepository.findMatchById(match.getMatchId());
+    Drawing drawing = drawingRepository.create(new Drawing(match));
 
-    Drawing drawing = new Drawing();
-    drawing.setMatch(match);
-    drawing = drawingRepository.create(drawing);
-
-    Player player = playerRepository.create(new Player("123asd", "Mike"));
+    Player player = playerRepository.create(new Player("123rew", "Mike"));
 
     matchRepository.addPlayerToMatch(match, player);
 
-    PlayerDrawing playerDrawing = new PlayerDrawing();
-    playerDrawing.setPlayer(player);
-    playerDrawing.setDrawing(drawing);
-    playerDrawing.setDescription("title");
-    titleRepository.create(playerDrawing);
+    Player player2 = playerRepository.create(new Player("456rew", "Peter"));
+
+    matchRepository.addPlayerToMatch(match, player2);
+
+    Title title = new Title(drawing, player2, "title", true);
+    titleRepository.create(title);
+
+    Optional<Title> optionalTitle = titleRepository.findCurrentTitleByPlayerSessionId("aaaa");
+
+    assertFalse(optionalTitle.isPresent());
+
+    optionalTitle = titleRepository.findCurrentTitleByPlayerSessionId(player2.getSessionId());
+
+    assertTrue(optionalTitle.isPresent());
+
+    assertEquals(title.getDescription(), optionalTitle.get().getDescription());
+    assertEquals(title.getIsOriginal(), optionalTitle.get().getIsOriginal());
+    assertEquals(title.getPlayer().getPlayerId(), optionalTitle.get().getPlayer().getPlayerId());
+    assertEquals(title.getPlayer().getSessionId(), optionalTitle.get().getPlayer().getSessionId());
+    assertEquals(title.getPlayer().getUserName(), optionalTitle.get().getPlayer().getUserName());
+    assertEquals(title.getDrawing().getDrawingId(),
+        optionalTitle.get().getDrawing().getDrawingId());
+    assertEquals(title.getDrawing().getMatch().getMatchId(),
+        optionalTitle.get().getDrawing().getMatch().getMatchId());
+    assertEquals(title.getDrawing().getMatch().getGame().getGameId(),
+        optionalTitle.get().getDrawing().getMatch().getGame().getGameId());
   }
 }

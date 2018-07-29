@@ -50,7 +50,7 @@ public class DrawingRepositoryTest {
   @Test
   public void createUpdateAndFindById() throws NotFoundException {
 
-    Game game = gameRepository.create(gameFactory.createNewGame("123asd"));
+    Game game = gameRepository.create(gameFactory.createNewGame("765rtr"));
 
     Match match = matchRepository.create(matchFactory.createNewMatch(game));
 
@@ -82,13 +82,13 @@ public class DrawingRepositoryTest {
     Drawing drawing = new Drawing(match);
     drawing = drawingRepository.create(drawing);
     Player player = playerRepository.create(new Player("123asd", "Mike"));
-    titleRepository.create(new Title(drawing, player, "Test title"));
+    titleRepository.create(new Title(drawing, player, "Test title", true));
     matchRepository.addPlayerToMatch(match, player);
 
     Drawing drawing2 = new Drawing(match);
     drawing2 = drawingRepository.create(drawing2);
     Player player2 = playerRepository.create(new Player("456asd", "John"));
-    titleRepository.create(new Title(drawing2, player2, "Test title 2"));
+    titleRepository.create(new Title(drawing2, player2, "Test title 2", true));
     matchRepository.addPlayerToMatch(match, player2);
 
     Optional<Drawing> optionalDrawing = drawingRepository

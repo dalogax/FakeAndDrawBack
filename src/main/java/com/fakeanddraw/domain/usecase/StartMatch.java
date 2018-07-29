@@ -16,7 +16,7 @@ import com.fakeanddraw.domain.model.MasterTitle;
 import com.fakeanddraw.domain.model.Match;
 import com.fakeanddraw.domain.model.MatchStatus;
 import com.fakeanddraw.domain.model.Player;
-import com.fakeanddraw.domain.model.PlayerDrawing;
+import com.fakeanddraw.domain.model.Title;
 import com.fakeanddraw.entrypoints.scheduler.Scheduler;
 import com.fakeanddraw.entrypoints.scheduler.TimeoutFactory;
 import com.fakeanddraw.entrypoints.scheduler.TimeoutType;
@@ -77,19 +77,18 @@ public class StartMatch implements UseCase<Integer> {
         // Get a new title for each player
         List<MasterTitle> titles = titleRepository.getMasterTitles(players.size());
         for (int i = 0; i < players.size(); i++) {
-          
-          //Save the title with an empty drawing
+
+          // Save the title with an empty drawing
           Drawing drawing = new Drawing(match);
           drawing = drawingRepository.create(drawing);
-          PlayerDrawing playerDrawing =
-              new PlayerDrawing(drawing, players.get(i), titles.get(i).getDescription());
-          titleRepository.create(playerDrawing);
+          Title title = new Title(drawing, players.get(i), titles.get(i).getDescription(), true);
+          titleRepository.create(title);
 
           // Send title assign message to each player
-          Message titleAssignMessage = new Message(MessageType.TITLE_ASSIGN.getType(),
-              new TitleAssignPayload(new Timestamp(match.getDrawTimeout().getMillis()),
-                  playerDrawing.getDescription()));
-          responseController.send(playerDrawing.getPlayer().getSessionId(), titleAssignMessage);
+          Message titleAssignMessage =
+              new Message(MessageType.TITLE_ASSIGN.getType(), new TitleAssignPayload(
+                  new Timestamp(match.getDrawTimeout().getMillis()), title.getDescription()));
+          responseController.send(title.getPlayer().getSessionId(), titleAssignMessage);
         }
 
         // Schedule new draw timeout. It should trigger StartRound use
@@ -102,7 +101,9 @@ public class StartMatch implements UseCase<Integer> {
         try {
           matchRepository.update(match);
         } catch (NotFoundException e) {
-          //Something very weird happened
+          logger.error(
+              "Something very weird happened. We failed updating a match we just got. MatchId {}",
+              match.getMatchId());
         }
 
       } else {

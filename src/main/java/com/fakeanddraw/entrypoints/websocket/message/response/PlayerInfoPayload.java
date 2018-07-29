@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAddedPayload extends MessagePayload {
+public class PlayerInfoPayload extends MessagePayload {
   private Integer userId;
   private String nickname;
 }

@@ -11,7 +11,7 @@ import com.fakeanddraw.entrypoints.websocket.ResponseController;
 import com.fakeanddraw.entrypoints.websocket.message.ErrorPayload;
 import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;
-import com.fakeanddraw.entrypoints.websocket.message.response.UserAddedPayload;
+import com.fakeanddraw.entrypoints.websocket.message.response.PlayerInfoPayload;
 
 @Component
 public class AddPlayerToGame implements UseCase<AddPlayerToGameRequest> {
@@ -35,7 +35,7 @@ public class AddPlayerToGame implements UseCase<AddPlayerToGameRequest> {
       matchRepository.addPlayerToMatch(match.get(), newPlayer);
 
       Message userAddedMessage = new Message(MessageType.USER_ADDED.getType(),
-          new UserAddedPayload(newPlayer.getPlayerId(), newPlayer.getUserName()));
+          new PlayerInfoPayload(newPlayer.getPlayerId(), newPlayer.getUserName()));
 
       // Notify master about new user joined
       responseController.send(match.get().getGame().getSessionId(), userAddedMessage);

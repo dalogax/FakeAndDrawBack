@@ -12,5 +12,6 @@ public class Title {
   Drawing drawing;
   Player player;
   String description;
+  Boolean isOriginal;
 
 }

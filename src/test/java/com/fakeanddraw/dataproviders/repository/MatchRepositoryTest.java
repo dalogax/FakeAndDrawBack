@@ -95,7 +95,7 @@ public class MatchRepositoryTest {
     Player player = playerRepository.create(new Player("sessionId_123", "userName_123"));
     matchRepository.addPlayerToMatch(match, player);
 
-    Optional<Match> matchByPlayerId = matchRepository.findMatchByPlayerId(player.getPlayerId());
+    Optional<Match> matchByPlayerId = matchRepository.findLastMatchByPlayerId(player.getPlayerId());
 
     assertTrue(matchByPlayerId.isPresent());
     assertEquals(match.getStatus(), matchByPlayerId.get().getStatus());

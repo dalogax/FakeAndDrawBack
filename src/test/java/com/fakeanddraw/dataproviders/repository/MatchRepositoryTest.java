@@ -105,6 +105,24 @@ public class MatchRepositoryTest {
   }
 
   @Test
+  public void createAndFindByPlayerSessionId() {
+
+    Game game = gameRepository.create(gameFactory.createNewGame("123asd"));
+    Match match = matchRepository.create(matchFactory.createNewMatch(game));
+    Player player = playerRepository.create(new Player("sessionId_123", "userName_123"));
+    matchRepository.addPlayerToMatch(match, player);
+
+    Optional<Match> matchByPlayerId =
+        matchRepository.findLastMatchByPlayerSessionId(player.getSessionId());
+
+    assertTrue(matchByPlayerId.isPresent());
+    assertEquals(match.getStatus(), matchByPlayerId.get().getStatus());
+    assertEquals(match.getCreatedDate(), matchByPlayerId.get().getCreatedDate());
+    assertEquals(match.getJoinTimeout(), matchByPlayerId.get().getJoinTimeout());
+    assertEquals(match.getDrawTimeout(), matchByPlayerId.get().getDrawTimeout());
+  }
+
+  @Test
   public void update() {
 
     Game game = gameRepository.create(gameFactory.createNewGame("123asd"));

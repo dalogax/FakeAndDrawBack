@@ -17,6 +17,8 @@ import com.fakeanddraw.domain.model.Game;
 import com.fakeanddraw.domain.model.GameFactory;
 import com.fakeanddraw.domain.model.Match;
 import com.fakeanddraw.domain.model.MatchFactory;
+import com.fakeanddraw.domain.model.Player;
+import com.fakeanddraw.domain.model.Title;
 import javassist.NotFoundException;
 
 @RunWith(SpringRunner.class)
@@ -38,6 +40,12 @@ public class DrawingRepositoryTest {
 
   @Autowired
   private MatchFactory matchFactory;
+
+  @Autowired
+  private TitleRepository titleRepository;
+
+  @Autowired
+  private PlayerRepository playerRepository;
 
   @Test
   public void createUpdateAndFindById() throws NotFoundException {
@@ -65,6 +73,25 @@ public class DrawingRepositoryTest {
 
     optionalDrawing = drawingRepository.findDrawingById(drawing.getDrawingId());
     assertEquals("image", optionalDrawing.get().getImage());
+  }
+
+  @Test
+  public void createUpdateAndFindByPlayerSessionIdAndMatchId() throws NotFoundException {
+    Game game = gameRepository.create(gameFactory.createNewGame("123asd"));
+    Match match = matchRepository.create(matchFactory.createNewMatch(game));
+    Drawing drawing = new Drawing(match);
+    drawing = drawingRepository.create(drawing);
+    Player player = playerRepository.create(new Player("123asd", "Mike"));
+    titleRepository.create(new Title(drawing, player, "Test title"));
+    matchRepository.addPlayerToMatch(match, player);
+
+    Optional<Drawing> optionalDrawing = drawingRepository
+        .findActiveDrawingByPlayerSessionIdAndMatchId(player.getSessionId(), match.getMatchId());
+
+    assertTrue(optionalDrawing.isPresent());
+    assertEquals(drawing.getDrawingId(), optionalDrawing.get().getDrawingId());
+    assertEquals(drawing.getMatch().getMatchId(), optionalDrawing.get().getMatch().getMatchId());
+    assertNull(optionalDrawing.get().getImage());
   }
 
   @Test(expected = NotFoundException.class)

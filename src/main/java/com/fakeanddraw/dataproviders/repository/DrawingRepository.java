@@ -69,6 +69,25 @@ public class DrawingRepository {
     }
   }
 
+  @Transactional(readOnly = true)
+  public Optional<Drawing> findActiveDrawingByPlayerSessionIdAndMatchId(String playerSessionId,
+      Integer matchId) {
+    try {
+      return Optional.of(jdbcTemplate.queryForObject(
+          "SELECT D.DRAWING_ID, D.IMAGE, M.MATCH_ID, M.STATUS, M.CREATED_DATE, M.JOIN_TIMEOUT, M.DRAW_TIMEOUT,"
+              + " G.GAME_ID, G.SESSION_ID, G.GAME_CODE " + " FROM DRAWING D"
+              + " INNER JOIN `MATCH` M ON D.MATCH_ID = M.MATCH_ID"
+              + " INNER JOIN GAME G ON M.GAME_ID = G.GAME_ID"
+              + " INNER JOIN MATCH_PLAYER MP ON M.MATCH_ID = MP.MATCH_ID"
+              + " INNER JOIN PLAYER P ON MP.PLAYER_ID = P.PLAYER_ID"
+              + " INNER JOIN TITLE T ON MP.PLAYER_ID = T.PLAYER_ID"
+              + " WHERE M.MATCH_ID = ? AND P.SESSION_ID = ?",
+          new Object[] {matchId, playerSessionId}, new DrawingRowMapper()));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
+  }
+
   public void update(final Drawing drawing) throws NotFoundException {
     final String sql = "UPDATE DRAWING SET IMAGE = ? WHERE DRAWING_ID = ?";
 

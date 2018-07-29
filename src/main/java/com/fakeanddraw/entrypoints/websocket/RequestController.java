@@ -53,7 +53,8 @@ public class RequestController {
 
           drawingSubmit
               .execute(new DrawingSubmitRequest(sessionId, drawingSubmitPayload.getImage()));
-
+          break;
+          
         default:
           logger.error("Message not supported received: {}", message);
           break;

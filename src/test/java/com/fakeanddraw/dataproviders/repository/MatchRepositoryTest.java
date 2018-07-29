@@ -16,6 +16,7 @@ import com.fakeanddraw.domain.model.GameFactory;
 import com.fakeanddraw.domain.model.Match;
 import com.fakeanddraw.domain.model.MatchFactory;
 import com.fakeanddraw.domain.model.MatchStatus;
+import com.fakeanddraw.domain.model.Player;
 import javassist.NotFoundException;
 
 @RunWith(SpringRunner.class)
@@ -34,6 +35,9 @@ public class MatchRepositoryTest {
 
   @Autowired
   private MatchFactory matchFactory;
+
+  @Autowired
+  private PlayerRepository playerRepository;
 
   @Test
   public void createAndFindById() {
@@ -81,6 +85,23 @@ public class MatchRepositoryTest {
     assertEquals(match.getCreatedDate(), matchOptional.get().getCreatedDate());
     assertEquals(match.getJoinTimeout(), matchOptional.get().getJoinTimeout());
     assertEquals(match.getDrawTimeout(), matchOptional.get().getDrawTimeout());
+  }
+
+  @Test
+  public void createAndFindByPlayerId() {
+
+    Game game = gameRepository.create(gameFactory.createNewGame("123asd"));
+    Match match = matchRepository.create(matchFactory.createNewMatch(game));
+    Player player = playerRepository.create(new Player("sessionId_123", "userName_123"));
+    matchRepository.addPlayerToMatch(match, player);
+
+    Optional<Match> matchByPlayerId = matchRepository.findMatchByPlayerId(player.getPlayerId());
+
+    assertTrue(matchByPlayerId.isPresent());
+    assertEquals(match.getStatus(), matchByPlayerId.get().getStatus());
+    assertEquals(match.getCreatedDate(), matchByPlayerId.get().getCreatedDate());
+    assertEquals(match.getJoinTimeout(), matchByPlayerId.get().getJoinTimeout());
+    assertEquals(match.getDrawTimeout(), matchByPlayerId.get().getDrawTimeout());
   }
 
   @Test

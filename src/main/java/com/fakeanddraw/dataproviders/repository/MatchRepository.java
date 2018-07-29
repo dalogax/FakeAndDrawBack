@@ -136,4 +136,17 @@ public class MatchRepository {
       return match;
     }
   }
+
+  @Transactional(readOnly = true)
+  public Optional<Match> findMatchByPlayerId(Integer playerId) {
+    try {
+      return Optional.of(jdbcTemplate.queryForObject(
+          "SELECT M.MATCH_ID, M.STATUS, M.CREATED_DATE, M.JOIN_TIMEOUT, M.DRAW_TIMEOUT, G.GAME_ID, G.SESSION_ID, G.GAME_CODE FROM `MATCH` M"
+              + " INNER JOIN GAME G ON M.GAME_ID = G.GAME_ID "
+              + " INNER JOIN MATCH_PLAYER P ON M.MATCH_ID = P.MATCH_ID WHERE P.PLAYER_ID = ? ",
+          new Object[] {playerId}, new MatchRowMapper()));
+    } catch (EmptyResultDataAccessException e) {
+      return Optional.empty();
+    }
+  }
 }

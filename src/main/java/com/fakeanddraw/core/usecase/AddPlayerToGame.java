@@ -1,12 +1,12 @@
-package com.fakeanddraw.domain.usecase;
+package com.fakeanddraw.core.usecase;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.fakeanddraw.core.domain.Match;
+import com.fakeanddraw.core.domain.Player;
 import com.fakeanddraw.dataproviders.repository.MatchRepository;
 import com.fakeanddraw.dataproviders.repository.PlayerRepository;
-import com.fakeanddraw.domain.model.Match;
-import com.fakeanddraw.domain.model.Player;
 import com.fakeanddraw.entrypoints.websocket.ResponseController;
 import com.fakeanddraw.entrypoints.websocket.message.ErrorPayload;
 import com.fakeanddraw.entrypoints.websocket.message.Message;

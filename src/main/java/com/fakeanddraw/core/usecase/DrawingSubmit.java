@@ -1,13 +1,13 @@
-package com.fakeanddraw.domain.usecase;
+package com.fakeanddraw.core.usecase;
 
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.fakeanddraw.core.domain.Title;
 import com.fakeanddraw.dataproviders.repository.DrawingRepository;
 import com.fakeanddraw.dataproviders.repository.TitleRepository;
-import com.fakeanddraw.domain.model.Title;
 import com.fakeanddraw.entrypoints.websocket.ResponseController;
 import com.fakeanddraw.entrypoints.websocket.message.Message;
 import com.fakeanddraw.entrypoints.websocket.message.MessageType;

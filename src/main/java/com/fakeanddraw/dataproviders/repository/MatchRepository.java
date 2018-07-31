@@ -17,12 +17,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import com.fakeanddraw.domain.model.Game;
-import com.fakeanddraw.domain.model.GameFactory;
-import com.fakeanddraw.domain.model.Match;
-import com.fakeanddraw.domain.model.MatchFactory;
-import com.fakeanddraw.domain.model.MatchStatus;
-import com.fakeanddraw.domain.model.Player;
+import com.fakeanddraw.core.domain.Game;
+import com.fakeanddraw.core.domain.GameFactory;
+import com.fakeanddraw.core.domain.Match;
+import com.fakeanddraw.core.domain.MatchFactory;
+import com.fakeanddraw.core.domain.MatchStatus;
+import com.fakeanddraw.core.domain.Player;
 import javassist.NotFoundException;
 
 @Repository

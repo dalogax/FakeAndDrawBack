@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.model;
+package com.fakeanddraw.core.domain;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;

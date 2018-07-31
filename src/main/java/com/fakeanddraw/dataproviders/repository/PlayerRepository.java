@@ -14,7 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import com.fakeanddraw.domain.model.Player;
+import com.fakeanddraw.core.domain.Player;
 
 @Repository
 public class PlayerRepository {

@@ -3,7 +3,7 @@ package com.fakeanddraw.entrypoints.scheduler;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fakeanddraw.domain.usecase.UseCase;
+import com.fakeanddraw.core.usecase.UseCase;
 
 public class Timeout implements Runnable {
 

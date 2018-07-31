@@ -1,12 +1,12 @@
-package com.fakeanddraw.domain.usecase;
+package com.fakeanddraw.core.usecase;
 
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.fakeanddraw.core.domain.Match;
 import com.fakeanddraw.dataproviders.repository.MatchRepository;
-import com.fakeanddraw.domain.model.Match;
 
 @Component
 public class StartRound implements UseCase<Integer> {

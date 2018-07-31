@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.usecase;
+package com.fakeanddraw.core.usecase;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import com.fakeanddraw.domain.model.Game;
-import com.fakeanddraw.domain.model.GameFactory;
+import com.fakeanddraw.core.domain.Game;
+import com.fakeanddraw.core.domain.GameFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

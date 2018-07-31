@@ -2,8 +2,8 @@ package com.fakeanddraw.entrypoints.scheduler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.fakeanddraw.domain.usecase.StartMatch;
-import com.fakeanddraw.domain.usecase.StartRound;
+import com.fakeanddraw.core.usecase.StartMatch;
+import com.fakeanddraw.core.usecase.StartRound;
 
 @Component
 public class TimeoutFactory {

@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.model;
+package com.fakeanddraw.core.domain;
 
 import lombok.AllArgsConstructor;
 

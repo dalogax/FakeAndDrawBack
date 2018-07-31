@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.usecase;
+package com.fakeanddraw.core.usecase;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -7,16 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.fakeanddraw.core.domain.Drawing;
+import com.fakeanddraw.core.domain.MasterTitle;
+import com.fakeanddraw.core.domain.Match;
+import com.fakeanddraw.core.domain.MatchStatus;
+import com.fakeanddraw.core.domain.Player;
+import com.fakeanddraw.core.domain.Title;
 import com.fakeanddraw.dataproviders.repository.DrawingRepository;
 import com.fakeanddraw.dataproviders.repository.MatchRepository;
 import com.fakeanddraw.dataproviders.repository.PlayerRepository;
 import com.fakeanddraw.dataproviders.repository.TitleRepository;
-import com.fakeanddraw.domain.model.Drawing;
-import com.fakeanddraw.domain.model.MasterTitle;
-import com.fakeanddraw.domain.model.Match;
-import com.fakeanddraw.domain.model.MatchStatus;
-import com.fakeanddraw.domain.model.Player;
-import com.fakeanddraw.domain.model.Title;
 import com.fakeanddraw.entrypoints.scheduler.Scheduler;
 import com.fakeanddraw.entrypoints.scheduler.TimeoutFactory;
 import com.fakeanddraw.entrypoints.scheduler.TimeoutType;

@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.model;
+package com.fakeanddraw.core.domain;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;

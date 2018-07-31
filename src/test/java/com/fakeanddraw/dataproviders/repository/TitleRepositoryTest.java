@@ -12,14 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import com.fakeanddraw.domain.model.Drawing;
-import com.fakeanddraw.domain.model.Game;
-import com.fakeanddraw.domain.model.GameFactory;
-import com.fakeanddraw.domain.model.MasterTitle;
-import com.fakeanddraw.domain.model.Match;
-import com.fakeanddraw.domain.model.MatchFactory;
-import com.fakeanddraw.domain.model.Player;
-import com.fakeanddraw.domain.model.Title;
+import com.fakeanddraw.core.domain.Drawing;
+import com.fakeanddraw.core.domain.Game;
+import com.fakeanddraw.core.domain.GameFactory;
+import com.fakeanddraw.core.domain.MasterTitle;
+import com.fakeanddraw.core.domain.Match;
+import com.fakeanddraw.core.domain.MatchFactory;
+import com.fakeanddraw.core.domain.Player;
+import com.fakeanddraw.core.domain.Title;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

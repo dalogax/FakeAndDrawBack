@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import com.fakeanddraw.domain.model.Game;
-import com.fakeanddraw.domain.model.GameFactory;
-import com.fakeanddraw.domain.model.Match;
-import com.fakeanddraw.domain.model.MatchFactory;
-import com.fakeanddraw.domain.model.MatchStatus;
-import com.fakeanddraw.domain.model.Player;
+import com.fakeanddraw.core.domain.Game;
+import com.fakeanddraw.core.domain.GameFactory;
+import com.fakeanddraw.core.domain.Match;
+import com.fakeanddraw.core.domain.MatchFactory;
+import com.fakeanddraw.core.domain.MatchStatus;
+import com.fakeanddraw.core.domain.Player;
 import javassist.NotFoundException;
 
 @RunWith(SpringRunner.class)

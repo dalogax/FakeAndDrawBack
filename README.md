@@ -15,9 +15,15 @@ $ mvn spring-boot:run
 ## Application architecture
 Using [clean architecture](https://github.com/mattia-battiston/clean-architecture-example).
 
-- EntryPoints
-- Domain
-- Dataproviders
+- entrypoints: point of interaction with the application and start of any process on the system.
+  - websocket: request and response controller for websockets communication.
+  - scheduler: task scheduling and triggering.
+- core
+  - domain: entities, factories and interfaces with no dependencies with any other part of the system.
+  - usecase: bussines actions
+- dataproviders: data source and storage
+  - repository: internal database storage
+  - webservice: external API used to get data
 
 ## Database
 - /src/main/resources/schema.sql -> schema definition for embedded database, will be executed on boot.

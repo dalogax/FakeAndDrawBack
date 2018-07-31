@@ -1,4 +1,4 @@
-package com.fakeanddraw.domain.usecase;
+package com.fakeanddraw.core.usecase;
 
 public interface UseCase<R> {
 

@@ -14,15 +14,15 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import com.fakeanddraw.domain.model.Drawing;
-import com.fakeanddraw.domain.model.Game;
-import com.fakeanddraw.domain.model.GameFactory;
-import com.fakeanddraw.domain.model.MasterTitle;
-import com.fakeanddraw.domain.model.Match;
-import com.fakeanddraw.domain.model.MatchFactory;
-import com.fakeanddraw.domain.model.MatchStatus;
-import com.fakeanddraw.domain.model.Player;
-import com.fakeanddraw.domain.model.Title;
+import com.fakeanddraw.core.domain.Drawing;
+import com.fakeanddraw.core.domain.Game;
+import com.fakeanddraw.core.domain.GameFactory;
+import com.fakeanddraw.core.domain.MasterTitle;
+import com.fakeanddraw.core.domain.Match;
+import com.fakeanddraw.core.domain.MatchFactory;
+import com.fakeanddraw.core.domain.MatchStatus;
+import com.fakeanddraw.core.domain.Player;
+import com.fakeanddraw.core.domain.Title;
 
 @Repository
 public class TitleRepository {
